@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolej Komuniti Masjid Tanah Photos Hub</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QRCode.js library for scanning albums on mobile -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling & tap highlights */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .album-card:active {
+            transform: scale(0.99);
+        }
+        .cover-zoom {
+            transition: transform 0.4s ease;
+        }
+        .album-card:hover .cover-zoom {
+            transform: scale(1.04);
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        /* Drag and Drop styling for Owner mode */
+        .album-card.dragging {
+            opacity: 0.45;
+            transform: scale(0.97);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+            border: 2px dashed #3b82f6;
+        }
+        .album-card.drag-over {
+            border: 2px solid #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px rgba(37, 99, 235, 0.25);
+        }
+        .drag-handle {
+            cursor: grab;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-700 pb-10">
+
+    <!-- Top Navigation Bar (Mobile Optimized) -->
+    <header class="sticky top-0 z-30 glassmorphism border-b border-slate-200 shadow-xs">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+            
+            <!-- Brand / Logo -->
+            <div class="flex items-center gap-2.5 cursor-pointer select-none" onclick="resetSearch()">
+                <div class="w-8 h-8 flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 48 48" class="w-7 h-7 drop-shadow-xs">
+                        <path fill="#EA4335" d="M24 24v-14a14 14 0 0 1 14 14z"/>
+                        <path fill="#4285F4" d="M24 24h14a14 14 0 0 1-14 14z"/>
+                        <path fill="#34A853" d="M24 24v14a14 14 0 0 1-14-14z"/>
+                        <path fill="#FBBC05" d="M24 24H10a14 14 0 0 1 14-14z"/>
+                    </svg>
+                </div>
+                <div class="leading-tight">
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900">
+                        KKMT Photos Hub
+                    </h1>
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Shared Albums</p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- Viewer Share Button -->
+                <button onclick="shareHubLink()" class="min-h-[40px] px-3 py-2 text-slate-600 hover:text-blue-600 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition flex items-center gap-1.5 text-xs font-semibold">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                    <span class="hidden xs:inline">Share</span>
+                </button>
+
+                <!-- Admin Group Controls -->
+                <div id="adminControlsGroup" class="hidden flex items-center gap-1.5">
+                    <button onclick="sortAlbumsByDate()" title="Auto-Sort by Date" class="min-h-[40px] px-2.5 py-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition text-xs font-semibold flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
+                        </svg>
+                        <span class="hidden md:inline">Sort Date</span>
+                    </button>
+                    <button id="btnBackup" onclick="openBackupModal()" title="Sync JSON" class="min-h-[40px] px-2.5 py-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition text-xs font-semibold">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                    </button>
+                    <button onclick="openAlbumModal()" class="min-h-[40px] bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-xl transition flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                        <span>Add</span>
+                    </button>
+                </div>
+
+                <!-- Admin PIN Lock/Unlock -->
+                <button id="adminToggleBtn" onclick="toggleAdminPrompt()" title="Owner Access" class="min-h-[40px] px-2.5 py-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition flex items-center gap-1 text-xs font-medium border border-slate-200">
+                    <svg id="lockIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <span id="lockText" class="hidden sm:inline">Owner PIN</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-5 sm:py-8 w-full">
+        
+        <!-- Mobile Welcome & Instructions -->
+        <div class="text-center max-w-xl mx-auto mb-6">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Kolej Komuniti Masjid Tanah Photos Hub</h2>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1">Tap any album to open and download full-resolution photos directly in Google Photos.</p>
+        </div>
+
+        <!-- Clean Album Name Search Bar -->
+        <div class="max-w-md mx-auto mb-6 sm:mb-8">
+            <div class="relative flex items-center shadow-xs rounded-2xl bg-white border border-slate-200 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition">
+                <span class="pl-4 pr-2 text-slate-400 pointer-events-none flex items-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </span>
+                <input type="text" id="searchInput" oninput="handleSearch(this.value)" 
+                       placeholder="Search by album name, date or year..." 
+                       autocomplete="off"
+                       class="w-full py-3 pr-10 text-sm text-slate-800 bg-transparent rounded-2xl focus:outline-none placeholder:text-slate-400">
+                
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 p-1 text-slate-400 hover:text-slate-600 rounded-full">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-center gap-2 text-xs text-slate-400 mt-2 px-1 text-center">
+                <span>Showing : <strong id="statTotalAlbums" class="text-slate-700 font-semibold">0</strong> albums</span>
+                <span id="searchFeedback" class="text-blue-600 font-medium hidden"></span>
+            </div>
+
+            <!-- View Switcher (Grid / List) -->
+            <div class="flex items-center justify-center mt-3">
+                <div class="inline-flex items-center p-1 bg-slate-200/80 rounded-2xl border border-slate-200 shadow-inner gap-1">
+                    <button id="viewGridBtn" onclick="setViewMode('grid')" type="button" title="Grid View"
+                            class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-blue-600 shadow-xs">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        <span>Grid</span>
+                    </button>
+                    <button id="viewListBtn" onclick="setViewMode('list')" type="button" title="List View"
+                            class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition text-slate-600 hover:text-slate-900">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <span>List</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="reorderTipBanner" class="hidden mt-3 text-center">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200/80 rounded-full text-[11px] font-medium animate-pulse">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+                    Owner Mode: Drag cards by the handle or use ◀ / ▶ arrows to arrange albums.
+                </span>
+            </div>
+        </div>
+
+        <!-- Albums Grid / List Container (Responsive for Mobile & Desktop) -->
+        <div id="albumsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            <!-- Populated via JavaScript -->
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="emptyState" class="hidden text-center py-14 bg-white rounded-3xl border border-dashed border-slate-200 p-6 my-4">
+            <div class="w-14 h-14 mx-auto mb-3 bg-slate-100 rounded-full flex items-center justify-center text-slate-400">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-sm font-bold text-slate-800">No album found</h3>
+            <p class="text-xs text-slate-500 max-w-xs mx-auto mt-1">Check the spelling of the album name, date, or year, or clear search.</p>
+            <button onclick="clearSearch()" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold rounded-xl transition">
+                Show All Albums
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal: QR Code for Mobile Scanning -->
+    <div id="qrModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-xs sm:max-w-sm rounded-3xl shadow-2xl border border-slate-100 p-6 text-center space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <h4 class="text-sm font-bold text-slate-900">Scan to Open on Mobile</h4>
+                <button onclick="closeQrModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <p id="qrAlbumTitle" class="text-xs text-slate-500 font-medium truncate">Album Title</p>
+            
+            <div class="flex justify-center p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+                <div id="qrcodeCanvas" class="p-2 bg-white rounded-xl shadow-xs"></div>
+            </div>
+
+            <p class="text-[11px] text-slate-400">Point your smartphone camera at the QR code to open directly in the Google Photos app.</p>
+            
+            <button onclick="closeQrModal()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal: Admin PIN Unlock -->
+    <div id="pinModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white max-w-xs w-full rounded-2xl p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+            </div>
+            <div class="text-center">
+                <h4 class="text-sm font-bold text-slate-800">Owner Access</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Enter PIN to edit or delete albums</p>
+            </div>
+            <form onsubmit="handlePinSubmit(event)" class="space-y-3">
+                <input type="password" id="pinInput" placeholder="Enter PIN" maxlength="10" autofocus
+                       class="w-full text-center text-lg font-mono tracking-widest px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="flex gap-2">
+                    <button type="button" onclick="closePinModal()" class="w-1/2 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancel</button>
+                    <button type="submit" class="w-1/2 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition">Unlock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add or Edit Album -->
+    <div id="albumModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-300">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    </div>
+                    <h3 id="modalTitle" class="text-base font-bold text-slate-900">Add Google Photos Album</h3>
+                </div>
+                <button onclick="closeAlbumModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Modal Form -->
+            <form id="albumForm" onsubmit="saveAlbum(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editAlbumId" value="">
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Album Title *</label>
+                    <input type="text" id="albumTitleInput" required placeholder="e.g. Majlis Konvokesyen KKMT"
+                           class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Google Photos Link *</label>
+                    <input type="url" id="albumUrlInput" required placeholder="https://photos.app.goo.gl/..."
+                           class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p class="text-[11px] text-slate-400 mt-1">Paste the share link from Google Photos.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Date or Year</label>
+                    <input type="text" id="albumDateInput" placeholder="e.g. September 2026"
+                           class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-700">Cover Photo</label>
+                        <span class="text-[11px] text-blue-600 font-medium">Link or Upload</span>
+                    </div>
+
+                    <!-- Live Image Preview Box -->
+                    <div class="relative w-full h-36 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 mb-2.5 group">
+                        <img id="coverImagePreview" src="" alt="Cover preview" class="w-full h-full object-cover hidden">
+                        <div id="coverPlaceholder" class="w-full h-full flex flex-col items-center justify-center text-slate-400 text-xs">
+                            <svg class="w-8 h-8 mb-1.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span>No cover chosen</span>
+                        </div>
+                    </div>
+
+                    <!-- Input Controls -->
+                    <div class="space-y-2">
+                        <div class="flex gap-2">
+                            <input type="text" id="albumCoverInput" oninput="updateCoverPreview(this.value)" placeholder="Paste image link or upload"
+                                   class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            
+                            <label class="cursor-pointer shrink-0 px-3.5 py-2.5 bg-blue-50 hover:bg-blue-100 active:bg-blue-200 text-blue-700 border border-blue-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                </svg>
+                                <span>Upload</span>
+                                <input type="file" id="coverFileInput" accept="image/*" class="hidden" onchange="handleCoverFileUpload(event)">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Description (Optional)</label>
+                    <textarea id="albumDescInput" rows="2" placeholder="Brief summary of what's inside this album..."
+                              class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeAlbumModal()" class="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-semibold rounded-xl shadow-xs transition">
+                        Save Album
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Quick Album Inspector / Direct Access -->
+    <div id="inspectorModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-300">
+            <div id="inspectorCover" class="h-44 bg-slate-200 relative bg-cover bg-center">
+                <button onclick="closeInspectorModal()" class="absolute top-3 right-3 bg-black/50 hover:bg-black/75 text-white p-1.5 rounded-full backdrop-blur-sm transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+                <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-slate-800" id="inspectorCategory">
+                    Category
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                    <span id="inspectorDate">Date</span>
+                    <span id="inspectorPhotosCount">Google Photos Shared Album</span>
+                </div>
+                <h3 id="inspectorTitle" class="text-xl font-bold text-slate-900 mb-2">Album Title</h3>
+                <p id="inspectorDesc" class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6">No description provided.</p>
+
+                <div class="space-y-2.5">
+                    <a id="inspectorLaunchBtn" href="#" target="_blank" rel="noopener noreferrer" 
+                       class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm shadow-sm transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        <span>Open in Google Photos</span>
+                    </a>
+                    
+                    <button id="inspectorCopyBtn" onclick="" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium text-xs transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                        </svg>
+                        <span>Copy Public Link</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Backup & Restore Data -->
+    <div id="backupModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-100 p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-base font-bold text-slate-900">Sync & Backup Albums</h3>
+                <button onclick="closeBackupModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500">
+                You can copy your JSON list of album links to save them or import them on any other computer.
+            </p>
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Albums JSON Configuration</label>
+                <textarea id="backupJsonArea" rows="7" class="w-full p-3 font-mono text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <button onclick="restoreSampleData()" class="text-xs font-medium text-red-600 hover:text-red-700">Reset to Defaults</button>
+                <div class="flex gap-2">
+                    <button onclick="importBackupJson()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl transition">
+                        Import JSON
+                    </button>
+                    <button onclick="copyBackupJson()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition">
+                        Copy to Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification (Replacement for alert) -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2.5 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-medium">
+        <span id="toastIcon" class="text-emerald-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </span>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
+    <!-- Confirm Modal (Replacement for window.confirm) -->
+    <div id="confirmModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white max-w-xs w-full rounded-2xl p-5 shadow-2xl border border-slate-100 text-center space-y-3">
+            <div class="w-10 h-10 mx-auto bg-red-100 text-red-600 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </div>
+            <h4 class="text-sm font-bold text-slate-800">Delete Album</h4>
+            <p class="text-xs text-slate-500">Are you sure you want to remove this album entry from your gallery hub?</p>
+            <div class="flex items-center justify-center gap-2 pt-2">
+                <button onclick="closeConfirmModal(false)" class="w-1/2 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancel</button>
+                <button id="confirmProceedBtn" class="w-1/2 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl transition">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200/80 bg-white py-6 text-center text-xs text-slate-400 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-center">
+            <p>Kolej Komuniti Masjid Tanah Photos Album Hub &bull; Direct Access Portal &bull; Created by Hafizs Abdullah</p>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'google_photos_hub_albums_v2';
+        const ADMIN_PIN_KEY = 'google_photos_hub_pin';
+        const DEFAULT_PIN = '1324';
+
+        // Preloaded albums with your Google Photos links
+        const SAMPLE_ALBUMS = [
+  {
+    "id": "alb_1789478113781",
+    "title": "GOTONG-ROYONG PERDANA EKSA BIL. 2/2026 DAN PROGRAM GOTONG ROYONG MEGA PERANGI AEDES BIL. 1/2026 PERINGKAT KEBANGSAAN",
+    "url": "https://photos.app.goo.gl/Lx9YcXH7zniaqiZo7",
+    "date": "13 July 2026",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczO8y-plT_0uv-N1yQpz-LyjoGgmWJ1ydHW3mk8jnu03U9Q3PAUq6CAS5y6MOoLNvNXDR8fgjWqcPfboFsoL53LTnOVduBK5KpeivkKxRGuIuiVi9kXKM4nwVzFFpxub_JYTxaF963dA6xe_5hT9Grct=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477998651",
+    "title": "KURSUS APPLICATION OF AI PROMPTING IN OFFICE DI AKADEMI KASTAM DIRAJA MALAYSIA (AKMAL), MELAKA",
+    "url": "https://photos.app.goo.gl/WN24nvihnCond6Bd7",
+    "date": "11 - 13 August 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMcwKy2J15yVTdf4LoTv5mTanNVLw-3fshvM9vA0ZtvPsw_VxeRZ_BOqpqzhC3r8sBmy7cM2mzOw1NcwLXVKwh_i0gT0CTpeoZFE6nt2du75W-8jPfcVeekdL-PLkqhBLWqbzYiEMOs5ouSJi4VHEXa=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477928247",
+    "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2025",
+    "url": "https://photos.app.goo.gl/4UP82Rihcoy3ob3c8",
+    "date": "3 August 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOCiX2iG5UIml_13ZABJQzh5kM8h-s6HcX6pNycH1UerhWXSX_beR5YoaYUz19uIpmMpk6YznCvXtyCzjVJNCTlLFUlr8ElCZqAliYUKm-gQPAEyZSxZ3XS00z-y6kWug_6S1YV5YK5Rg7gt1dz557k=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477867342",
+    "title": "RAPTAI MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2025",
+    "url": "https://photos.app.goo.gl/ZG12mU7u2kAPK1Ni7",
+    "date": "2 August 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMCMZUsykUdbFFJ72aXtzKRz_iVSzC0InE4p_IDZ_xiCnfodAG6Pej_1xsHSbsxOuCguzdMF-ibzoRJf1X0SORqkc4xdv7hGXq4OCsm--TtmdmASEF1oxtNAL4DaEF3Z5Md7W6efC0osrwrmOf_zWyV=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477803940",
+    "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI I 2025/2026",
+    "url": "https://photos.app.goo.gl/izhot5vAUy773jRX9",
+    "date": "29 July 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMb5Ohm77Oryw8tKIKoe7yFdnyNU4gDmBEtH0dHrfbTjWEt0161hI8scT1XOrX7o4Va_AEHhTcfMC7VPjLDfnmE3Ardo_wod8BNbsj2-g9_9T1Si8U1lbDDR0NCIGaEcLr4VzdvJ_skD50uQyQbO7iT=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477717339",
+    "title": "RASSCOMTECH PROJECT SHOWCASE 2025",
+    "url": "https://photos.app.goo.gl/jaSNAuHCkFeR2nDL9",
+    "date": "14 March 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMfH1eIVKh1EaFnXPtOHp31XhoNkwtRfdTFWHIbH_PgXKhYqzFttSbk6FyhZB_VKmqcoew2Bg-ETjIKW2ZDKdTfncozSeYRUQKUopL4Di3gzowNPZdjJtt6C-ozl8SMKgSQv-OrSWdXhIWEomW9cFN-=w1507-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477636440",
+    "title": "LAWATAN AKADEMIK UNIT STM : IT VENTURE",
+    "url": "https://photos.app.goo.gl/qRqdSBRMVp6mD23r9",
+    "date": "6 March 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpjIIBVx94qiLLUE3rJ7W-nDx3-5patYicKl9xSfW9m42X40G7RpPQQ9XyG7gNfBUyxFLMdfDnZM30NwbMlRuqv_QRjR8-3PCwyeWHYDUWvBRQZWKlMXkF4Bjl5j0O-uAEKr-o_6G69cdh9Rxwh3uz=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477332586",
+    "title": "AUDIT PENSIJILAN SEMULA MS ISO 9001:2015",
+    "url": "https://photos.app.goo.gl/cRYtduuDRS7R9Mv4A",
+    "date": "27 -28 February 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPbJ4iDTXPrxmlXQ-voSHec-70ukIsHvfZCvw1CB_sv-KnsBMl1pRZuotXIu-XVCTyobJp6RA17g3twaP_J6MrrqbFQNCBVp5CdOzxfClxJX29bQzkUbvbaJ5k6QFQyj-SVQsZyBzr8A7YNIVzJ746v=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477484131",
+    "title": "SAMBUTAN HARI RAYA KOLEJ KOMUNITI MASJID TANAH 2025",
+    "url": "https://photos.app.goo.gl/8syBRnYK5UGQMs8U7",
+    "date": "16 April 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNGJd7lTFGsf5W9DH1BcTBL2_MpCiFlYwY-ZPxY3-rrwZRpNGpMxzjsvV45-TYEaek5vll9Lwcq5zhlUIEuv__Z5rQhxl9u8yfeJxOqjlFh7ZnDr7z6kYHpGo8NWlPCj-XbXc_6MD5It8E-H9_u9YXV=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477399375",
+    "title": "MAJLIS PENUTUP LANTERA QASEH@KKMT 2025",
+    "url": "https://photos.app.goo.gl/4TR7ZiHZeeFnUdea6",
+    "date": "2 March 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMi6q6fgN3OZ_-06DwMzjFh213UEkpesI3E5utREUi_RH62_q1p9bnl-hsFqFkIIz5mmWBSSHKn0RHJkc7IckpnTBXJaZA2VVavZEWzK97MhsibubO1XIWCZlTlVxq290JKlgAcgtfiOW08ox0Vpgmd=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477258649",
+    "title": "PROGRAM MEMBANGUN SINERGI BUDAYA KEUSAHAWANAN MELALUI BISNES DIGITAL BERSAMA POLITEKNIK NEGERI BENGKALIS, INDONESIA",
+    "url": "https://photos.app.goo.gl/59B2o5s5YG8fvjwo7",
+    "date": "2 February 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOSogdLvDjoCri-AtDXixezFILR-0jwpEwUvzbWMtHymb0qDK86oGa4EQvx3esn54fjQK7P9oTIgsMZLKnMnBWA65CfIy4ab4gaLAdKW91kzdNpCNN11MBBhVSwdzwpbnWOfakBS5JKOEH9rqfm3uYc=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477198586",
+    "title": "CSR BERSAMA TADIKA JAIM MELAKA",
+    "url": "https://photos.app.goo.gl/1sP7ZqqAmkJzwnxR8",
+    "date": "14 January 2025",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOAji7tzu1hEOcjhT4ItPjAfe20OBFjHVyyVXS2QYBbiZ85Ah6TIucv26NgQdlQzpc3iCNVTDBAxc1rv1dw2gun_X3OFuRXfeQ2vP8DB54Ai9HaNbpGPhs9ZGQyt4dLlGEA8MMce7W1_vH-pufTV6Ds=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477148375",
+    "title": "KURSUS ASAS TENPIN BOWLING STAF KOLEJ KOMUNITI MASJID TANAH 2024",
+    "url": "https://photos.app.goo.gl/mY9UbUoHVXXenXda8",
+    "date": "16 December 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOMq65fVWTfO1WC3_H_57fqWoOmDAFnd_dQzzLGtiYw3t9M7DTJjH8jI74FJcra3ZE50TCtEhnBBReHpZ6sSZt4Gvb67RULKyIN2i8jGL_74jjDJ-EPp-eiok2EqgGO2asvo9HWuVvabdq0ku-a6P9K=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789477025271",
+    "title": "MAJLIS APRESIASI & AKADEMIA KOLEJ KOMUNITI MASJID TANAH 2024",
+    "url": "https://photos.app.goo.gl/RF8Vu29SfLGNNi998",
+    "date": "5 December 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczP0eiP7ugrKCK-Y1z-NNEg5rVaoIT0uUez1tJgYmR2QII7peCv0Grkj9Z6lXKsn7Y9d8UwUN7XESq623z1bn_Hta7r0I8eZTgxSXJADW6xogFUCbWr0_n2BdhZAzcd3fcv9AMGsr_9eRTc3hwqMvk7v=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789476965352",
+    "title": "MAJLIS PRA GRADUASI UNIT SIJIL TEKNOLOGI MAKLUMAT 2024",
+    "url": "https://photos.app.goo.gl/XoUy9fczCiMKaavk8",
+    "date": "29 November 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPIiHZReZnpxrRUaZsqG93ZPsHXCNFfaDewO1a3JvlSG49XY_oCqysH_iGZ_11y5rqXYgCWGignydds2P3QpgqNEMr5gz3fSfZ1V94tIajksxPVIG6NzoOTEVwQT1Wmq5f6ZEDXVmqT2PKcHPm6x_zS=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789476891118",
+    "title": "RASSCOMTECH PROJECT SHOWCASE 2024",
+    "url": "https://photos.app.goo.gl/cxcMm68zo9weeyFR9",
+    "date": "20 November 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNCYiUqPLpdQtzqX2McGFQDZYBiQrpQJV2ZnSst5vEDw8MqS5d92iZFyFOMZidOXyXZsd8f499vDUWjuQSbTVCegj5xBE3N8lRIA1A056TEHUF_ECjxeTR421fffdiv3I0rbDl5dDXCl05qzc2nBTyN=w1547-h1031-s-no-gm?authuser=0",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789473852989",
+    "title": "PERASMIAN PENUTUP KURSUS URUTAN POSTNATAL & PENJAGAAN IBU BERPANTANG",
+    "url": "https://photos.app.goo.gl/wPMFCYJeoBiPxxo29",
+    "date": "7 November 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOER20VPDRXUegbRYJYghbVcFtT7xhbFlYVv2QKrZ2hJNUhDm838gipPMlfuRrRvcK4FV8Nb5MVmxVsFje4Xs_SbyKUBH1NwDA1YrFDV-Pj4a_Y88YUGaJuIH35DY_eq2fPkNUNNC4ojAdesO7CblT1=w1547-h1031-s-no-gm?authuser=0",
+    "desc": "",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789473763199",
+    "title": "MESYUARAT JAWATANKUASA PENASIHAT INDUSTRI KOLEJ KOMUNITI MASJID TANAH 2024",
+    "url": "https://photos.app.goo.gl/WVX1fmhNizrbQwsy6",
+    "date": "10 October 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczN7Qlsma1rZlvgxLwSgByrU8-2D7KsMebTG4N1cpZb36Wx7MMCLCwcKJpB2DVwTX6_pnPbkSkIwRmB2iuVqmweRgzJFDEhJ9jYYWuWY9gVf3or8t3QyghHUQiExNiU-MbArqvIHTW9EXr0HtsdPD6hA=w1547-h1031-s-no-gm?authuser=0",
+    "desc": "",
+    "favorite": false
+  },
+  {
+    "id": "alb_1789473653547",
+    "title": "KURSUS KEPIMPINAN & PERASMIAN COLLABORATIVE CLASSROOM",
+    "url": "https://photos.app.goo.gl/phWMs5hpLKf1g8Rv7",
+    "date": "30 September 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpao7Gij7Zg9yehxxwSM1zPLFYS0DOntX6yPcnx4K450wrN11mOUcDG9Tr7deN7_c2DgAUCxFeqQ0s4C0X5h3A-k9XG3Gx_xPeibrKAiV3o1ppWihmIFobAuFuORvI89bY_T0nn3dAq2QgHp04PTAq=w1547-h1031-s-no-gm?authuser=0",
+    "desc": "",
+    "favorite": false
+  },
+  {
+    "id": "alb_usr_3",
+    "title": "PERHIMPUNAN PELAJAR & MAJLIS PENYAMPAIAN ANUGERAH PENGARAH KOLEJ KOMUNITI MASJID TANAH 2024",
+    "url": "https://photos.app.goo.gl/hULcYXf96hjTyqLSA",
+    "date": "27 September 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNY7pd9yiWF7FhZSRUsssqDcmyfyFljmy6ivMYhlFIz791_vSj6oe_faZQ3WYDnOz4l2xxdWTXTQCxCO6KtDrxQvz-tBqYHVogcb-jL23MMl4_tRnpgL5CdR48RhuFCgeWe-5YfXMK0rJROXGGgylyt=w1547-h1031-s-no-gm?authuser=0",
+    "desc": "Tap to open the album and view original high-resolution photos.",
+    "favorite": false
+  },
+  {
+    "id": "alb_usr_1",
+    "title": "LAWATAN PENANDA ARAS KOLEJ KOMUNITI KEMAMAN KE KOLEJ KOMUNITI MASJID TANAH",
+    "url": "https://photos.app.goo.gl/sfCav5466URuYixDA",
+    "date": "25 September 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpyDadrLWnrMGT74UDpFjAxrGcR0CQSnJAW-AWGiqoi65owQfTt6nvSpM2Qq0kz0S360ZmKyUj785plfCteNT8cvJNBLpeLU3BvsaLlpM90RHrjVmthmeO5PCgVoZsu0dsWvIRq04WhY2W2ywg6LQ7=w1547-h1031-s-no-gm?authuser=0",
+    "desc": "Tap to open the album and view original high-resolution photos.",
+    "favorite": false
+  },
+  {
+    "id": "alb_usr_2",
+    "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2024",
+    "url": "https://photos.app.goo.gl/Tc8F32DMe4coSMFB9",
+    "date": "19 August 2024",
+    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNc9c91-dF77o7mO_mCYQanU1WGOBMBoVXpGVaio_J1iYhexPCs7ofSGXUdT5CHGCzjL86wbM-CF7s4o3H_P6I1Xf3j4ckxU5BxIl7C7VDHhWlEvSihEth4vxmh7p30n2tw_ugVEgNh6DP5z3yM5QWN=w1547-h1031-s-no-gm?authuser=0",
+    "desc": "Tap to open the album and view original high-resolution photos.",
+    "favorite": false
+  }
+];
+
+        let albums = [];
+        let searchQuery = '';
+        let pendingDeleteId = null;
+        let isAdmin = false;
+        let currentView = 'grid';
+        let draggedAlbumId = null;
+
+        const RANDOM_COVERS = [
+            'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80'
+        ];
+
+        function initApp() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    albums = JSON.parse(saved);
+                } else {
+                    albums = [...SAMPLE_ALBUMS];
+                    saveToStorage();
+                }
+            } catch (e) {
+                albums = [...SAMPLE_ALBUMS];
+            }
+
+            renderAlbums();
+            updateStats();
+            updateAdminUI();
+        }
+
+        function createGridCard(album) {
+            const card = document.createElement('div');
+            card.className = 'album-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-2xs hover:shadow-md transition duration-200 flex flex-col relative';
+            card.dataset.id = album.id;
+
+            if (isAdmin && !searchQuery.trim()) {
+                card.setAttribute('draggable', 'true');
+                attachDragEvents(card, album.id);
+            }
+
+            const coverUrl = album.cover || 'https://placehold.co/600x400/e2e8f0/64748b?text=Google+Photos';
+
+            card.innerHTML = `
+                ${isAdmin ? `
+                    <!-- Owner Drag Handle Header -->
+                    <div class="drag-handle bg-slate-900 text-white text-[11px] font-semibold px-3 py-1.5 flex items-center justify-between select-none">
+                        <span class="flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                <circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/>
+                                <circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/>
+                                <circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/>
+                            </svg>
+                            Drag to Reorder
+                        </span>
+                        <div class="flex items-center gap-1">
+                            <button onclick="event.stopPropagation(); moveAlbum('${album.id}', -1)" title="Move Earlier" class="p-1 hover:bg-slate-700 active:bg-slate-600 rounded">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button onclick="event.stopPropagation(); moveAlbum('${album.id}', 1)" title="Move Later" class="p-1 hover:bg-slate-700 active:bg-slate-600 rounded">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                ` : ''}
+
+                <!-- Direct Tap Cover on Mobile opens Google Photos immediately -->
+                <a href="${escapeHtml(album.url)}" target="_blank" rel="noopener noreferrer" 
+                   class="relative h-48 sm:h-52 w-full bg-slate-100 overflow-hidden block group">
+                    <img src="${coverUrl}" alt="${escapeHtml(album.title)}" 
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Photos+Album'"
+                         loading="lazy"
+                         class="cover-zoom w-full h-full object-cover">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10"></div>
+                    
+                    <!-- Photos Indicator Badge -->
+                    <span class="absolute top-3 left-3 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-medium text-white flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-blue-300" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/>
+                        </svg>
+                        <span>Google Photos</span>
+                    </span>
+
+                    ${isAdmin ? `
+                        <button onclick="event.preventDefault(); event.stopPropagation(); editAlbum('${album.id}');" 
+                                title="Change Cover" 
+                                class="absolute bottom-3 left-3 bg-black/75 hover:bg-black text-white text-xs font-medium px-2.5 py-1.5 rounded-xl backdrop-blur-xs flex items-center gap-1.5 shadow-sm">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span>Change Cover</span>
+                        </button>
+                    ` : ''}
+
+                    <div class="absolute bottom-3 right-3 bg-white/95 text-slate-800 text-xs font-semibold px-2.5 py-1 rounded-xl shadow-xs flex items-center gap-1">
+                        <span>Open</span>
+                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </div>
+                </a>
+
+                <!-- Card Details: Full title without truncation or description -->
+                <div class="p-4 sm:p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="text-[11px] text-slate-400 font-medium mb-1.5">
+                            ${album.date ? escapeHtml(album.date) : 'Shared Album'}
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg leading-snug break-words hover:text-blue-600 transition" title="${escapeHtml(album.title)}">
+                            ${escapeHtml(album.title)}
+                        </h3>
+                    </div>
+
+                    <!-- Action Controls for Mobile & Desktop -->
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+                        <a href="${escapeHtml(album.url)}" target="_blank" rel="noopener noreferrer" 
+                           class="flex-1 min-h-[44px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-xs sm:text-sm px-3 rounded-2xl flex items-center justify-center gap-2 shadow-xs transition">
+                            <span>Open Album</span>
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                        
+                        <button onclick="copyAlbumLink('${escapeHtml(album.url)}')" 
+                                title="Copy Public Link" 
+                                class="min-h-[44px] min-w-[44px] p-2.5 text-slate-500 hover:text-slate-900 active:bg-slate-200 bg-slate-100 rounded-2xl transition flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        </button>
+
+                        <button onclick="showQrModal('${escapeHtml(album.title)}', '${escapeHtml(album.url)}')" 
+                                title="Show QR Code" 
+                                class="min-h-[44px] min-w-[44px] p-2.5 text-slate-500 hover:text-slate-900 active:bg-slate-200 bg-slate-100 rounded-2xl transition flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                            </svg>
+                        </button>
+
+                        ${isAdmin ? `
+                            <button onclick="editAlbum('${album.id}')" title="Edit" class="min-h-[44px] min-w-[44px] p-2 text-blue-600 hover:bg-blue-50 rounded-2xl transition flex items-center justify-center">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                            </button>
+                            <button onclick="promptDelete('${album.id}')" title="Delete" class="min-h-[44px] min-w-[44px] p-2 text-red-600 hover:bg-red-50 rounded-2xl transition flex items-center justify-center">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function createListCard(album) {
+            const card = document.createElement('div');
+            card.className = 'album-card bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xs hover:shadow-md transition duration-200 p-3.5 sm:p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-5 relative';
+            card.dataset.id = album.id;
+
+            if (isAdmin && !searchQuery.trim()) {
+                card.setAttribute('draggable', 'true');
+                attachDragEvents(card, album.id);
+            }
+
+            const coverUrl = album.cover || 'https://placehold.co/600x400/e2e8f0/64748b?text=Google+Photos';
+
+            card.innerHTML = `
+                ${isAdmin ? `
+                    <!-- Owner Mobile Reorder Bar in List -->
+                    <div class="drag-handle flex items-center justify-between bg-slate-100 -mt-2 -mx-2 sm:-my-2 sm:-ml-2 sm:mr-0 px-2.5 py-1.5 sm:py-2.5 rounded-lg border border-slate-200/80 text-[11px] text-slate-700 font-medium select-none">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                <circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/>
+                                <circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/>
+                                <circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/>
+                            </svg>
+                            <span class="hidden sm:inline">Drag</span>
+                        </span>
+                        <div class="flex items-center gap-1">
+                            <button onclick="event.stopPropagation(); moveAlbum('${album.id}', -1)" title="Move Up" class="p-1 hover:bg-slate-200 rounded">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+                            </button>
+                            <button onclick="event.stopPropagation(); moveAlbum('${album.id}', 1)" title="Move Down" class="p-1 hover:bg-slate-200 rounded">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                ` : ''}
+
+                <!-- Thumbnail & Mobile Direct Tap -->
+                <a href="${escapeHtml(album.url)}" target="_blank" rel="noopener noreferrer" 
+                   class="relative w-full sm:w-44 h-40 sm:h-28 bg-slate-100 rounded-xl sm:rounded-2xl overflow-hidden shrink-0 block group">
+                    <img src="${coverUrl}" alt="${escapeHtml(album.title)}" 
+                         onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Photos+Album'"
+                         loading="lazy"
+                         class="cover-zoom w-full h-full object-cover">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent sm:hidden"></div>
+
+                    <span class="absolute top-2 left-2 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full text-[10px] text-white flex items-center gap-1 font-medium">
+                        <svg class="w-3 h-3 text-blue-300" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/>
+                        </svg>
+                        <span>Google Photos</span>
+                    </span>
+
+                    <span class="sm:hidden absolute bottom-2 right-2 bg-white/95 text-slate-800 text-[11px] font-semibold px-2 py-0.5 rounded-lg shadow-xs flex items-center gap-1">
+                        <span>Open</span>
+                        <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </span>
+                </a>
+
+                <!-- Details Section: Full title without truncate or description -->
+                <div class="flex-grow min-w-0 flex flex-col justify-center py-1">
+                    <div class="text-[11px] text-slate-400 font-medium mb-1">
+                        ${album.date ? escapeHtml(album.date) : 'Shared Album'}
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base sm:text-lg leading-snug break-words hover:text-blue-600 transition" title="${escapeHtml(album.title)}">
+                        <a href="${escapeHtml(album.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(album.title)}</a>
+                    </h3>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                    <a href="${escapeHtml(album.url)}" target="_blank" rel="noopener noreferrer" 
+                       class="flex-1 sm:flex-none min-h-[42px] px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition">
+                        <span>Open Album</span>
+                        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+
+                    <button onclick="copyAlbumLink('${escapeHtml(album.url)}')" 
+                            title="Copy Public Link" 
+                            class="min-h-[42px] min-w-[42px] p-2 text-slate-500 hover:text-slate-900 active:bg-slate-200 bg-slate-100 rounded-xl transition flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    </button>
+
+                    <button onclick="showQrModal('${escapeHtml(album.title)}', '${escapeHtml(album.url)}')" 
+                            title="Show QR Code" 
+                            class="min-h-[42px] min-w-[42px] p-2 text-slate-500 hover:text-slate-900 active:bg-slate-200 bg-slate-100 rounded-xl transition flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                        </svg>
+                    </button>
+
+                    ${isAdmin ? `
+                        <button onclick="editAlbum('${album.id}')" title="Edit" class="min-h-[42px] min-w-[42px] p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                        </button>
+                        <button onclick="promptDelete('${album.id}')" title="Delete" class="min-h-[42px] min-w-[42px] p-2 text-red-600 hover:bg-red-50 rounded-xl transition flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+            return card;
+        }
+
+        function setViewMode(mode) {
+            currentView = mode;
+            const gridBtn = document.getElementById('viewGridBtn');
+            const listBtn = document.getElementById('viewListBtn');
+
+            if (mode === 'grid') {
+                gridBtn.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-blue-600 shadow-xs';
+                listBtn.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition text-slate-600 hover:text-slate-900';
+            } else {
+                listBtn.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-blue-600 shadow-xs';
+                gridBtn.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition text-slate-600 hover:text-slate-900';
+            }
+
+            renderAlbums();
+        }
+
+        function renderAlbums() {
+            const container = document.getElementById('albumsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const searchFeedback = document.getElementById('searchFeedback');
+            container.innerHTML = '';
+
+            // Apply container layout according to current view mode
+            if (currentView === 'grid') {
+                container.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6';
+            } else {
+                container.className = 'flex flex-col gap-3 sm:gap-4';
+            }
+
+            const cleanQuery = searchQuery.trim().toLowerCase();
+
+            // Search by album title, date or year
+            const filtered = albums.filter(album => {
+                if (!cleanQuery) return true;
+                const titleMatch = album.title && album.title.toLowerCase().includes(cleanQuery);
+                const dateMatch = album.date && album.date.toLowerCase().includes(cleanQuery);
+                return titleMatch || dateMatch;
+            });
+
+            if (cleanQuery) {
+                searchFeedback.classList.remove('hidden');
+                searchFeedback.textContent = `${filtered.length} found`;
+            } else {
+                searchFeedback.classList.add('hidden');
+            }
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                container.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            filtered.forEach(album => {
+                if (currentView === 'grid') {
+                    container.appendChild(createGridCard(album));
+                } else {
+                    container.appendChild(createListCard(album));
+                }
+            });
+
+            updateStats(filtered.length);
+        }
+
+        function handleSearch(val) {
+            searchQuery = val;
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (val) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderAlbums();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            handleSearch('');
+        }
+
+        function resetSearch() {
+            clearSearch();
+        }
+
+        function updateStats(filteredCount = null) {
+            const count = filteredCount !== null && searchQuery.trim() !== '' ? filteredCount : albums.length;
+            document.getElementById('statTotalAlbums').textContent = count;
+        }
+
+        function openAlbumModal(album = null) {
+            const modal = document.getElementById('albumModal');
+            const titleEl = document.getElementById('modalTitle');
+            const editId = document.getElementById('editAlbumId');
+            const form = document.getElementById('albumForm');
+
+            if (album) {
+                titleEl.textContent = 'Edit Google Photos Album';
+                editId.value = album.id;
+                document.getElementById('albumTitleInput').value = album.title || '';
+                document.getElementById('albumUrlInput').value = album.url || '';
+                document.getElementById('albumDateInput').value = album.date || '';
+                document.getElementById('albumCoverInput').value = album.cover || '';
+                updateCoverPreview(album.cover || '');
+            } else {
+                titleEl.textContent = 'Add Google Photos Album';
+                editId.value = '';
+                form.reset();
+                updateCoverPreview('');
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeAlbumModal() {
+            document.getElementById('albumModal').classList.add('hidden');
+        }
+
+        function updateCoverPreview(src) {
+            const previewImg = document.getElementById('coverImagePreview');
+            const placeholder = document.getElementById('coverPlaceholder');
+            if (src && src.trim() !== '') {
+                previewImg.src = src;
+                previewImg.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                previewImg.onerror = function() {
+                    previewImg.classList.add('hidden');
+                    placeholder.classList.remove('hidden');
+                };
+            } else {
+                previewImg.src = '';
+                previewImg.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+        }
+
+        function handleCoverFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                document.getElementById('albumCoverInput').value = dataUrl;
+                updateCoverPreview(dataUrl);
+                showToast('Cover photo loaded from device!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveAlbum(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editAlbumId').value;
+            const title = document.getElementById('albumTitleInput').value.trim();
+            const url = document.getElementById('albumUrlInput').value.trim();
+            const date = document.getElementById('albumDateInput').value.trim();
+            let cover = document.getElementById('albumCoverInput').value.trim();
+
+            if (!cover) {
+                cover = RANDOM_COVERS[Math.floor(Math.random() * RANDOM_COVERS.length)];
+            }
+
+            if (editId) {
+                const index = albums.findIndex(a => a.id === editId);
+                if (index !== -1) {
+                    albums[index] = {
+                        ...albums[index],
+                        title,
+                        url,
+                        date,
+                        cover
+                    };
+                    showToast('Album updated successfully');
+                }
+            } else {
+                const newAlbum = {
+                    id: 'alb_' + Date.now(),
+                    title,
+                    url,
+                    date,
+                    cover,
+                    favorite: false
+                };
+                albums.unshift(newAlbum);
+                showToast('New album added!');
+            }
+
+            saveToStorage();
+            closeAlbumModal();
+            renderAlbums();
+            updateStats();
+        }
+
+        function editAlbum(id) {
+            const album = albums.find(a => a.id === id);
+            if (album) {
+                openAlbumModal(album);
+            }
+        }
+
+        function promptDelete(id) {
+            pendingDeleteId = id;
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal(proceed) {
+            document.getElementById('confirmModal').classList.add('hidden');
+            if (proceed && pendingDeleteId) {
+                albums = albums.filter(a => a.id !== pendingDeleteId);
+                saveToStorage();
+                renderAlbums();
+                updateStats();
+                showToast('Album deleted');
+            }
+            pendingDeleteId = null;
+        }
+
+        function toggleAdminPrompt() {
+            if (isAdmin) {
+                isAdmin = false;
+                updateAdminUI();
+                renderAlbums();
+                showToast('Hub locked (Viewer Mode)');
+            } else {
+                document.getElementById('pinInput').value = '';
+                document.getElementById('pinModal').classList.remove('hidden');
+                setTimeout(() => document.getElementById('pinInput').focus(), 50);
+            }
+        }
+
+        function closePinModal() {
+            document.getElementById('pinModal').classList.add('hidden');
+        }
+
+        function handlePinSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('pinInput').value.trim();
+            const savedPin = localStorage.getItem(ADMIN_PIN_KEY) || DEFAULT_PIN;
+            
+            if (input === savedPin) {
+                isAdmin = true;
+                closePinModal();
+                updateAdminUI();
+                renderAlbums();
+                showToast('Owner Mode Unlocked: You can now add, edit or delete albums.');
+            } else {
+                showToast('Incorrect PIN. Try again.');
+                document.getElementById('pinInput').value = '';
+            }
+        }
+
+        function updateAdminUI() {
+            const adminGroup = document.getElementById('adminControlsGroup');
+            const lockText = document.getElementById('lockText');
+            const lockBtn = document.getElementById('adminToggleBtn');
+            const reorderTip = document.getElementById('reorderTipBanner');
+
+            if (isAdmin) {
+                adminGroup.classList.remove('hidden');
+                if (reorderTip) reorderTip.classList.remove('hidden');
+                lockText.textContent = 'Lock Hub';
+                lockBtn.classList.remove('text-slate-400', 'border-slate-200');
+                lockBtn.classList.add('text-emerald-600', 'border-emerald-300', 'bg-emerald-50');
+            } else {
+                adminGroup.classList.add('hidden');
+                if (reorderTip) reorderTip.classList.add('hidden');
+                lockText.textContent = 'Owner PIN';
+                lockBtn.classList.add('text-slate-400', 'border-slate-200');
+                lockBtn.classList.remove('text-emerald-600', 'border-emerald-300', 'bg-emerald-50');
+            }
+        }
+
+        function attachDragEvents(cardEl, albumId) {
+            cardEl.addEventListener('dragstart', (e) => {
+                draggedAlbumId = albumId;
+                cardEl.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', albumId);
+            });
+
+            cardEl.addEventListener('dragend', () => {
+                cardEl.classList.remove('dragging');
+                document.querySelectorAll('.album-card').forEach(el => el.classList.remove('drag-over'));
+                draggedAlbumId = null;
+            });
+
+            cardEl.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                if (draggedAlbumId && draggedAlbumId !== albumId) {
+                    cardEl.classList.add('drag-over');
+                }
+            });
+
+            cardEl.addEventListener('dragleave', () => {
+                cardEl.classList.remove('drag-over');
+            });
+
+            cardEl.addEventListener('drop', (e) => {
+                e.preventDefault();
+                cardEl.classList.remove('drag-over');
+                const targetAlbumId = albumId;
+
+                if (!draggedAlbumId || draggedAlbumId === targetAlbumId) return;
+
+                const sourceIndex = albums.findIndex(a => a.id === draggedAlbumId);
+                const targetIndex = albums.findIndex(a => a.id === targetAlbumId);
+
+                if (sourceIndex !== -1 && targetIndex !== -1) {
+                    const [moved] = albums.splice(sourceIndex, 1);
+                    albums.splice(targetIndex, 0, moved);
+                    saveToStorage();
+                    renderAlbums();
+                    showToast('Albums reordered & saved!');
+                }
+            });
+        }
+
+        function moveAlbum(albumId, offset) {
+            const index = albums.findIndex(a => a.id === albumId);
+            if (index === -1) return;
+
+            const targetIndex = index + offset;
+            if (targetIndex < 0 || targetIndex >= albums.length) return;
+
+            const [moved] = albums.splice(index, 1);
+            albums.splice(targetIndex, 0, moved);
+
+            saveToStorage();
+            renderAlbums();
+            showToast('Album moved!');
+        }
+
+        function sortAlbumsByDate() {
+            // Parses common date formats (e.g., "September 2026", "2026-09", etc.)
+            albums.sort((a, b) => {
+                const dateA = new Date(a.date || 0).getTime();
+                const dateB = new Date(b.date || 0).getTime();
+                
+                // If standard date parsing fails, compare strings
+                if (isNaN(dateA) || isNaN(dateB)) {
+                    return (b.date || '').localeCompare(a.date || '');
+                }
+                return dateB - dateA; // Newest first
+            });
+
+            saveToStorage();
+            renderAlbums();
+            showToast('Albums sorted by date (newest first)!');
+        }
+
+        let qrcodeInstance = null;
+        function showQrModal(title, url) {
+            document.getElementById('qrAlbumTitle').textContent = title;
+            const container = document.getElementById('qrcodeCanvas');
+            container.innerHTML = '';
+            
+            qrcodeInstance = new QRCode(container, {
+                text: url,
+                width: 180,
+                height: 180,
+                colorDark : "#0f172a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.M
+            });
+
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        function shareHubLink() {
+            const url = window.location.href;
+            const temp = document.createElement('input');
+            temp.value = url;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast('Hub link copied! Share this with anyone.');
+            } catch (err) {
+                showToast('Unable to copy link.');
+            }
+            document.body.removeChild(temp);
+        }
+
+        function copyAlbumLink(url) {
+            const temp = document.createElement('input');
+            temp.value = url;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast('Google Photos link copied to clipboard!');
+            } catch (err) {
+                showToast('Failed to copy link. Please open directly.');
+            }
+            document.body.removeChild(temp);
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
+            } catch (e) {
+                console.error('Storage quota exceeded or disabled', e);
+            }
+        }
+
+        function openBackupModal() {
+            const area = document.getElementById('backupJsonArea');
+            area.value = JSON.stringify(albums, null, 2);
+            document.getElementById('backupModal').classList.remove('hidden');
+        }
+
+        function closeBackupModal() {
+            document.getElementById('backupModal').classList.add('hidden');
+        }
+
+        function copyBackupJson() {
+            const area = document.getElementById('backupJsonArea');
+            area.select();
+            try {
+                document.execCommand('copy');
+                showToast('JSON albums list copied to clipboard!');
+            } catch (err) {
+                showToast('Failed to copy JSON.');
+            }
+        }
+
+        function importBackupJson() {
+            const area = document.getElementById('backupJsonArea');
+            try {
+                const parsed = JSON.parse(area.value);
+                if (Array.isArray(parsed)) {
+                    albums = parsed;
+                    saveToStorage();
+                    renderAlbums();
+                    updateStats();
+                    closeBackupModal();
+                    showToast('Albums successfully imported!');
+                } else {
+                    showToast('Invalid JSON structure: must be an array.');
+                }
+            } catch (err) {
+                showToast('Error parsing JSON. Check your formatting.');
+            }
+        }
+
+        function restoreSampleData() {
+            albums = [...SAMPLE_ALBUMS];
+            saveToStorage();
+            renderAlbums();
+            updateStats();
+            closeBackupModal();
+            showToast('Reset to default demonstration albums.');
+        }
+
+        let toastTimeout = null;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toastMessage');
+            text.textContent = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        const proceedBtn = document.getElementById('confirmProceedBtn');
+        if (proceedBtn) {
+            proceedBtn.onclick = () => closeConfirmModal(true);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAlbumModal();
+                closeBackupModal();
+                closeConfirmModal(false);
+                closePinModal();
+                closeQrModal();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+    </script>
+</body>
+</html>
