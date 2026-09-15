@@ -459,391 +459,385 @@
         const ADMIN_PIN_KEY = 'google_photos_hub_pin';
         const DEFAULT_PIN = '1324';
 
-        // Preloaded albums with your Google Photos links
+        // Embedded Kolej Komuniti Masjid Tanah Photo Albums
         const SAMPLE_ALBUMS = [
-  {
-    "id": "alb_1789484022625",
-    "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA - SIDANG 19",
-    "url": "https://photos.app.goo.gl/geA97raEnuXboqQf6",
-    "date": "14 September 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOcboBGJ3HMrlBwBcoxKCD7EhM14P82VYH0VRCH_8ONsKdI1DqOVgoLmSbWJ-kUAYoWmVJQoHXyVNlLDOWDH0_hYRkZ-1wLRxDpzzwjAIrs153ZFd7adBIWetRTBbtUchFacLHCEPNBiL7vhw73pPoq=w1679-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483971802",
-    "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA - SIDANG 18",
-    "url": "https://photos.app.goo.gl/HAqjMbbw2MMHsTy59",
-    "date": "14 September 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczP7riBmSw8bnwOf7A6t6JgXMvS9BERmbFuKqslq5KSpEliJjWrp6HKSUSVw8ixQqskdlvY8I8BhqGMjkJFvlOIC6M9RhaX3oXI4oDeXwunoq3-o6TV5ef20-R6oJpfZso-O5UzXp6Jj-FXP10Uzwnvr=w1680-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483923007",
-    "title": "RAPTAI MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2026",
-    "url": "https://photos.app.goo.gl/VLwGkgwjm2e7snMk8",
-    "date": "13 September 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPy83HwmGaYxmhIZsLCXUSg5lWX_VcX-SjeSpcy7YNXMR0H4-gRKM8f9RcvBEs_OPwKuQa4dFOs_vkks-vCNRebrt3b2C4JglQajJy9A19e34TbyTUxiNkyQQtQ5JyaiNnWzJcvJWBCHQQAUOp1KyQL=w1681-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483851813",
-    "title": "BENGKEL PEMBANGUNAN GARIS PANDUAN KAJIAN PROGRAM NEEDS ANALYSIS (PNA) DAN MARKET NEED ANALYSIS (MNA)",
-    "url": "https://photos.app.goo.gl/b8hC3BXpnK74Ew5M7",
-    "date": "9 - 10 September 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczP6XL8Mhkt-nlDIKpkh2f_HiktiWempUyM38zv12UE6PcEedS5mCaWKECw36GyqleXH8vxghtEJtBoBqI4D6vRC8DW3jbOMTyq6UEeuyNkwAr1Dgd_a2JigSMPE869T90U1pJgIJGCNeTlPdVSTPQYi=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483770546",
-    "title": "KURSUS UPSKILLING PENSYARAH: MOBILE APPLICATION BAGI PROGRAM SIJIL DI BAWAH BIDANG PENGKOMPUTERAN",
-    "url": "https://photos.app.goo.gl/YYHfASpQGzfBxEW67",
-    "date": "14 - 16 July 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPu8IchG671k4nBCgAndgBFMqz5fT1TK5yUVPOrxpAZQK48WTfJBuhNGPec4mVAPcj6h3nyG7SY-j1LJkGgHb-LGe_pBHMLtEwVsD9dzzBounY0aZROCsQj1UPd3xC3zajQscVKBwY0TnTqt7X1wYNb=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789478113781",
-    "title": "GOTONG-ROYONG PERDANA EKSA BIL. 2/2026 DAN PROGRAM GOTONG ROYONG MEGA PERANGI AEDES BIL. 1/2026 PERINGKAT KEBANGSAAN",
-    "url": "https://photos.app.goo.gl/Lx9YcXH7zniaqiZo7",
-    "date": "13 July 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczO8y-plT_0uv-N1yQpz-LyjoGgmWJ1ydHW3mk8jnu03U9Q3PAUq6CAS5y6MOoLNvNXDR8fgjWqcPfboFsoL53LTnOVduBK5KpeivkKxRGuIuiVi9kXKM4nwVzFFpxub_JYTxaF963dA6xe_5hT9Grct=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483622233",
-    "title": "LAWATAN SUSULAN PENAZIRAN AKADEMIK (PENA)",
-    "url": "https://photos.app.goo.gl/p1qV5xxnjYwhXuMc8",
-    "date": "9 July 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPgXwXgdEsMLSGvg8PxNN4mRc_KpBAH1kl_dBsbGXESOpHKVbyP1r-vA9K-2qvX8PZhx8H7JNHIE3IJi-7NhfEFEgDJrowZiH6edvBc9afhQ7C8zL81CXFEL2pMwuGSulvnlX6ef3Uatu9tM9XGAYxF=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483560824",
-    "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI I 2026/2027",
-    "url": "https://photos.app.goo.gl/Y7jsDYTNhXE3WKJeA",
-    "date": "23 June 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOrBAbQA8vuj_7m78957qlW3chH_e0pEqHCHWukBKSMrrM40MecsVpw3ec227mqPPK7c3ONaYJ5-kSkObrWo_x59fqwpMcQAHTTYbutsFfOs5oprCW0dRbsjl0mWgJBSbM7U9-ia-aB-RcSNw8PvjPd=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483503279",
-    "title": "MESYUARAT PENASIHAT PROGRAM SIJIL TEKNOLOGI MAKLUMAT 2026",
-    "url": "https://photos.app.goo.gl/n29j3rxdjnJMKcib9",
-    "date": "10 June 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMT0c_hJTaKAr1rqUQcfiy80bDFtxzac7Xp6XigUOQeCDdtj4H-ycvRIxfDhvY_ntgm1L93lWxBUHS0R9aqdD43aW3TS1rddaSPcjrSGBdQH0BhAIrBcHKBBkhTejkmz4M85yPusF1atTqpZNcwx6HH=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483149823",
-    "title": "RASSCOMTECH PROJECT SHOWCASE 2026",
-    "url": "https://photos.app.goo.gl/8gVQxFh92gBoK3Mq9",
-    "date": "7 May 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPKrKb2oHKos6ImJ92Qj0Tpb6ZPbI2j40KpiukgEWQ_C6KwlIsG1ySbdzzWk_Gbyy33bHYg84bHoO1aZuYONsJvwaqFApXMSuaJqNKKY-SPzTHndmA-VF1iu9hAT3gQebC_yJ0eEknN_6nV1jOllIFW=w1679-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483684609",
-    "title": "PROGRAM UKHWAH PASUKAN SIJIL TEKNOLOGI MAKLUMAT (STM) 2026",
-    "url": "https://photos.app.goo.gl/XgPAqxruCh2DapjN9",
-    "date": "4 - 5 May 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNxqGH_G5WECuxPMI0HYyt6xeQ_vRnh2KWj5M-YrqWdrszrvg2-opzXWg0jbnIPJ8jB-0rLPW4hs61p0aNv25w04KfCNaAUQiFFWGlBu905J4gyfqBSb66Ff3ht2WIaZETW4nxVaeTFHEpxJmMC-hPm=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483050457",
-    "title": "MAJLIS APRESIASI PELAJAR & SAMBUTAN HARI RAYA AIDILFITRI 2026",
-    "url": "https://photos.app.goo.gl/4NJ8rLna3GzKh3KG6",
-    "date": "15 April 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMljD83vSqbKKJ64RYpMwI7MBR5zLf_ju312uQR0W75sBUe-6hCkoGvB31CqTjmydV7-fEoitThgeVo5CA_pRbHTrts-5QG6DQ6dBkJEM9jQQchAFSuQKbp9vl730T1w5u8SRK6iw21_Kuv7IWraZ-I=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482919773",
-    "title": "LANTERA QASEH@KKMT 2026",
-    "url": "https://photos.app.goo.gl/zV9RW3PgeubpMj727",
-    "date": "27 February - 13 May 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczN5hn4VxYlFb_HCJtgYVTKBjYLjzEVu0w5YteElHP6v8FTHXW-iJ1nlVtMLsKu0KEAa6GzbbKOjZGgdkHaUayzJTANE-FADWUMo1o4HjUaHtKFtuQSd3Ak7xaV4CX4Mg5l60qqBmdTIXkMjrx5CDY2X=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482814153",
-    "title": "PROGRAM LATIHAN PENGUNGSIAN BANGUNAN (FIRE DRILL) 2026",
-    "url": "https://photos.app.goo.gl/ViEc7PJrbHwxU51AA",
-    "date": "12 February 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMzUvUgD_xmDM4SDASf2SQMAlauKPe6TVK9x5rTIrdwvx-o0zJH88g7tihFSqP0JwEXrEcCNIaYHy5w0q3UtwsdKTvkWekXfsrAXQtvkfloUd9KZSNSfYJvSOe9MSzZSw3YHwr1HQv_fEJI6ojh4sYv=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482726722",
-    "title": "PROGRAM DERMA DARAH BLOOD FOR LIFE",
-    "url": "https://photos.app.goo.gl/rgfc1w7zyJirnUHV9",
-    "date": "11 February 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczN-_SSNRc1gZzXQoHr87BwI9cj2cDaG-crZ8aKj4hzYgfxpHCSsyofTCPTHhihv088fYQI-YcY1igIOzAI5MTzjz9-HBkQiCD9lHkTtoSVHPzJT7cm4JqzJcwaCELw54QEztDGKxTSQdTe4Ms_DUd_7=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482671751",
-    "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI II 2025/2026",
-    "url": "https://photos.app.goo.gl/nvvF19xLsGnmZKjC9",
-    "date": "6 January 2026",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMbu9sT3qJQuaw5ntxyfhzrK2FuiztNUt4L8575vwS2Emi58XFYyQP5m1tFJoCwei2Nw0Y9DDsCYi-b8rrB5ovK9wwby3DbYriIP79PBUS4M4mghR5jzp5TVuT8K93blpWvav_K1IFK6pDi9m8RFwTk=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482591972",
-    "title": "BENGKEL PENGURUSAN PADANG DAN UNDANG-UNDANG SUKAN BOLA SEPAK POLYCC MELAKA DAN NEGERI SEMBILAN 2025",
-    "url": "https://photos.app.goo.gl/MX8FZ7RSuN8ja24K6",
-    "date": "18 December 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMe2OuEWAbht1xva01fGr-LT_MDMUL97XqeDZ0xqbFm4dKkb7-teTiEYwUDKuyan3Pkj7QA5T985kGtamvffL9Yk4oG7ZgJD7rb0G_QgDObi9IItVXK9_AfpoMsgIswshpDZTRJ9MNlSr8sQtY6lPoi=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482507647",
-    "title": "PROGRAM KURSUS PEMANTAPAN KERJASAMA BERPASUKAN DAN SOKONGAN KESIHATAN MENTAL",
-    "url": "https://photos.app.goo.gl/bvWzT1zqHG4T2qADA",
-    "date": "15 December 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOyoFG3hO2maMRf_8693ORratPeIc4nRG5bb20_aiiCIJqHw9Kbc6UdqbnI2mcNkLB3B7_4Uldv4K33qzrorsXZt-2cXAMGKe_5PpdcQsUhHXZs3HScpJLAtk556QozgX3kmZ5W6G7ErVOQKs9DRN2x=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789481948990",
-    "title": "MESYUARAT JAWATANKUASA PENASIHAT INDUSTRI (JPI) KOLEJ KOMUNITI MASJID TANAH TAHUN 2025",
-    "url": "https://photos.app.goo.gl/6hPT67Xk5LUVqJbA8",
-    "date": "23 October 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNXkA3_XjRaIC20UhUSoE_8YBOhQliB_uTTOOk2KXQhAid1fwehZc7Ai3WFvVkjfmL9YhB23EY1NfBzQkLmtNLbOTrGA2dTEJJQUAWL95CBeF45zkcAbpDaalBVg-mhlOxurJWEz01on9qFHqxjg8EE=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789481886620",
-    "title": "SPSH 2025 - CLOSING CEREMONY",
-    "url": "https://photos.app.goo.gl/3tHJNypGkERabqvs6",
-    "date": "2 October 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNSSE8uWU-sxneC8m2ScF42p3EyUjY2Ix7QvBDJf4Tds1Mhgp4QMYNvj7gwDyUpMlMCzsqMvPuP7s2BEH24sjegLufvGw19xmq0KhYtzpc-BckdYGRAJW1y8r3MC2iWrwCO1DSoeG2nncBuEXuPHj0t=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789481799833",
-    "title": "SPSH 2025 - COMMITTEE MEETING",
-    "url": "https://photos.app.goo.gl/LL1KZHUruxPcrcta9",
-    "date": "7 May - 25 September 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPHscQ0l8PRtG2fw4w94IbhxKEhJhz8vyQAIPeui9Ab9R5_RZL0_f-mExK27fURx6EAtlJ2DSUlRZymFVqZlQfB_A8x2K_XzkrV9lBxJFz3Ff8U-WVye2pkpbmjcrOlsBjzPQEkh-jqDBSj18A6yeQw=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789481636020",
-    "title": "ProAlBi 2025",
-    "url": "https://photos.app.goo.gl/QaxafccDYjPgoAAE9",
-    "date": "26 - 28 August 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczN-kZhYwBwCldGgXH3bY_kC3rhd6MrYq3pPU31RjS9gXJoAsu81Z7uzYNdmUzOhLVB4-blcIIEB-fk_nfIooRrSnmMiFRVaYg2w06s5pC6sqMjwuxFj4zqFjMnNFV-cFU9tcB1nTiMpNdHIi6cRKAhO=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789481449695",
-    "title": "PROGRAM PENINGKATAN KEMAHIRAN (PPK) AUTODESK AUTOCAD CERTIFIED USER (ACU) TRAINING",
-    "url": "https://photos.app.goo.gl/SxTSr81N4wi4gicA9",
-    "date": "22 August 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczO7OPudkjIjQ-S6JqwY4y7my6lPOsiWCSAf0qP2mSFrpDTc7Fv_fKJ-vBsWP5onLEcs6Ntf_IuHH_HxTgZR-_nLyHJ5e-LX6rkWHL-ultbMMtNyrKQ_C0_4uDBmB3_mIhuerPtZhzcr-1Q5ZKKxbF8=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477998651",
-    "title": "KURSUS APPLICATION OF AI PROMPTING IN OFFICE DI AKADEMI KASTAM DIRAJA MALAYSIA (AKMAL), MELAKA",
-    "url": "https://photos.app.goo.gl/WN24nvihnCond6Bd7",
-    "date": "13 August 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMcwKy2J15yVTdf4LoTv5mTanNVLw-3fshvM9vA0ZtvPsw_VxeRZ_BOqpqzhC3r8sBmy7cM2mzOw1NcwLXVKwh_i0gT0CTpeoZFE6nt2du75W-8jPfcVeekdL-PLkqhBLWqbzYiEMOs5ouSJi4VHEXa=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477928247",
-    "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2025",
-    "url": "https://photos.app.goo.gl/4UP82Rihcoy3ob3c8",
-    "date": "3 August 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOCiX2iG5UIml_13ZABJQzh5kM8h-s6HcX6pNycH1UerhWXSX_beR5YoaYUz19uIpmMpk6YznCvXtyCzjVJNCTlLFUlr8ElCZqAliYUKm-gQPAEyZSxZ3XS00z-y6kWug_6S1YV5YK5Rg7gt1dz557k=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477867342",
-    "title": "RAPTAI MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2025",
-    "url": "https://photos.app.goo.gl/ZG12mU7u2kAPK1Ni7",
-    "date": "2 August 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMCMZUsykUdbFFJ72aXtzKRz_iVSzC0InE4p_IDZ_xiCnfodAG6Pej_1xsHSbsxOuCguzdMF-ibzoRJf1X0SORqkc4xdv7hGXq4OCsm--TtmdmASEF1oxtNAL4DaEF3Z5Md7W6efC0osrwrmOf_zWyV=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477803940",
-    "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI I 2025/2026",
-    "url": "https://photos.app.goo.gl/izhot5vAUy773jRX9",
-    "date": "29 July 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMb5Ohm77Oryw8tKIKoe7yFdnyNU4gDmBEtH0dHrfbTjWEt0161hI8scT1XOrX7o4Va_AEHhTcfMC7VPjLDfnmE3Ardo_wod8BNbsj2-g9_9T1Si8U1lbDDR0NCIGaEcLr4VzdvJ_skD50uQyQbO7iT=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477484131",
-    "title": "SAMBUTAN HARI RAYA KOLEJ KOMUNITI MASJID TANAH 2025",
-    "url": "https://photos.app.goo.gl/8syBRnYK5UGQMs8U7",
-    "date": "16 April 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNGJd7lTFGsf5W9DH1BcTBL2_MpCiFlYwY-ZPxY3-rrwZRpNGpMxzjsvV45-TYEaek5vll9Lwcq5zhlUIEuv__Z5rQhxl9u8yfeJxOqjlFh7ZnDr7z6kYHpGo8NWlPCj-XbXc_6MD5It8E-H9_u9YXV=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477717339",
-    "title": "RASSCOMTECH PROJECT SHOWCASE 2025",
-    "url": "https://photos.app.goo.gl/jaSNAuHCkFeR2nDL9",
-    "date": "14 March 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMfH1eIVKh1EaFnXPtOHp31XhoNkwtRfdTFWHIbH_PgXKhYqzFttSbk6FyhZB_VKmqcoew2Bg-ETjIKW2ZDKdTfncozSeYRUQKUopL4Di3gzowNPZdjJtt6C-ozl8SMKgSQv-OrSWdXhIWEomW9cFN-=w1507-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477636440",
-    "title": "LAWATAN AKADEMIK UNIT STM : IT VENTURE",
-    "url": "https://photos.app.goo.gl/qRqdSBRMVp6mD23r9",
-    "date": "6 March 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpjIIBVx94qiLLUE3rJ7W-nDx3-5patYicKl9xSfW9m42X40G7RpPQQ9XyG7gNfBUyxFLMdfDnZM30NwbMlRuqv_QRjR8-3PCwyeWHYDUWvBRQZWKlMXkF4Bjl5j0O-uAEKr-o_6G69cdh9Rxwh3uz=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477399375",
-    "title": "MAJLIS PENUTUP LANTERA QASEH@KKMT 2025",
-    "url": "https://photos.app.goo.gl/4TR7ZiHZeeFnUdea6",
-    "date": "2 March 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMi6q6fgN3OZ_-06DwMzjFh213UEkpesI3E5utREUi_RH62_q1p9bnl-hsFqFkIIz5mmWBSSHKn0RHJkc7IckpnTBXJaZA2VVavZEWzK97MhsibubO1XIWCZlTlVxq290JKlgAcgtfiOW08ox0Vpgmd=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477332586",
-    "title": "AUDIT PENSIJILAN SEMULA MS ISO 9001:2015",
-    "url": "https://photos.app.goo.gl/cRYtduuDRS7R9Mv4A",
-    "date": "27 -28 February 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPbJ4iDTXPrxmlXQ-voSHec-70ukIsHvfZCvw1CB_sv-KnsBMl1pRZuotXIu-XVCTyobJp6RA17g3twaP_J6MrrqbFQNCBVp5CdOzxfClxJX29bQzkUbvbaJ5k6QFQyj-SVQsZyBzr8A7YNIVzJ746v=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477258649",
-    "title": "PROGRAM MEMBANGUN SINERGI BUDAYA KEUSAHAWANAN MELALUI BISNES DIGITAL BERSAMA POLITEKNIK NEGERI BENGKALIS, INDONESIA",
-    "url": "https://photos.app.goo.gl/59B2o5s5YG8fvjwo7",
-    "date": "2 February 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOSogdLvDjoCri-AtDXixezFILR-0jwpEwUvzbWMtHymb0qDK86oGa4EQvx3esn54fjQK7P9oTIgsMZLKnMnBWA65CfIy4ab4gaLAdKW91kzdNpCNN11MBBhVSwdzwpbnWOfakBS5JKOEH9rqfm3uYc=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477198586",
-    "title": "CSR BERSAMA TADIKA JAIM MELAKA",
-    "url": "https://photos.app.goo.gl/1sP7ZqqAmkJzwnxR8",
-    "date": "14 January 2025",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOAji7tzu1hEOcjhT4ItPjAfe20OBFjHVyyVXS2QYBbiZ85Ah6TIucv26NgQdlQzpc3iCNVTDBAxc1rv1dw2gun_X3OFuRXfeQ2vP8DB54Ai9HaNbpGPhs9ZGQyt4dLlGEA8MMce7W1_vH-pufTV6Ds=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477148375",
-    "title": "KURSUS ASAS TENPIN BOWLING STAF KOLEJ KOMUNITI MASJID TANAH 2024",
-    "url": "https://photos.app.goo.gl/mY9UbUoHVXXenXda8",
-    "date": "16 December 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOMq65fVWTfO1WC3_H_57fqWoOmDAFnd_dQzzLGtiYw3t9M7DTJjH8jI74FJcra3ZE50TCtEhnBBReHpZ6sSZt4Gvb67RULKyIN2i8jGL_74jjDJ-EPp-eiok2EqgGO2asvo9HWuVvabdq0ku-a6P9K=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789477025271",
-    "title": "MAJLIS APRESIASI & AKADEMIA KOLEJ KOMUNITI MASJID TANAH 2024",
-    "url": "https://photos.app.goo.gl/RF8Vu29SfLGNNi998",
-    "date": "5 December 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczP0eiP7ugrKCK-Y1z-NNEg5rVaoIT0uUez1tJgYmR2QII7peCv0Grkj9Z6lXKsn7Y9d8UwUN7XESq623z1bn_Hta7r0I8eZTgxSXJADW6xogFUCbWr0_n2BdhZAzcd3fcv9AMGsr_9eRTc3hwqMvk7v=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789476965352",
-    "title": "MAJLIS PRA GRADUASI UNIT SIJIL TEKNOLOGI MAKLUMAT 2024",
-    "url": "https://photos.app.goo.gl/XoUy9fczCiMKaavk8",
-    "date": "29 November 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPIiHZReZnpxrRUaZsqG93ZPsHXCNFfaDewO1a3JvlSG49XY_oCqysH_iGZ_11y5rqXYgCWGignydds2P3QpgqNEMr5gz3fSfZ1V94tIajksxPVIG6NzoOTEVwQT1Wmq5f6ZEDXVmqT2PKcHPm6x_zS=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789476891118",
-    "title": "RASSCOMTECH PROJECT SHOWCASE 2024",
-    "url": "https://photos.app.goo.gl/cxcMm68zo9weeyFR9",
-    "date": "20 November 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNCYiUqPLpdQtzqX2McGFQDZYBiQrpQJV2ZnSst5vEDw8MqS5d92iZFyFOMZidOXyXZsd8f499vDUWjuQSbTVCegj5xBE3N8lRIA1A056TEHUF_ECjxeTR421fffdiv3I0rbDl5dDXCl05qzc2nBTyN=w1547-h1031-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789473852989",
-    "title": "PERASMIAN PENUTUP KURSUS URUTAN POSTNATAL & PENJAGAAN IBU BERPANTANG",
-    "url": "https://photos.app.goo.gl/wPMFCYJeoBiPxxo29",
-    "date": "7 November 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOER20VPDRXUegbRYJYghbVcFtT7xhbFlYVv2QKrZ2hJNUhDm838gipPMlfuRrRvcK4FV8Nb5MVmxVsFje4Xs_SbyKUBH1NwDA1YrFDV-Pj4a_Y88YUGaJuIH35DY_eq2fPkNUNNC4ojAdesO7CblT1=w1547-h1031-s-no-gm?authuser=0",
-    "desc": "",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789473763199",
-    "title": "MESYUARAT JAWATANKUASA PENASIHAT INDUSTRI KOLEJ KOMUNITI MASJID TANAH 2024",
-    "url": "https://photos.app.goo.gl/WVX1fmhNizrbQwsy6",
-    "date": "10 October 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczN7Qlsma1rZlvgxLwSgByrU8-2D7KsMebTG4N1cpZb36Wx7MMCLCwcKJpB2DVwTX6_pnPbkSkIwRmB2iuVqmweRgzJFDEhJ9jYYWuWY9gVf3or8t3QyghHUQiExNiU-MbArqvIHTW9EXr0HtsdPD6hA=w1547-h1031-s-no-gm?authuser=0",
-    "desc": "",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789473653547",
-    "title": "KURSUS KEPIMPINAN & PERASMIAN COLLABORATIVE CLASSROOM",
-    "url": "https://photos.app.goo.gl/phWMs5hpLKf1g8Rv7",
-    "date": "30 September 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpao7Gij7Zg9yehxxwSM1zPLFYS0DOntX6yPcnx4K450wrN11mOUcDG9Tr7deN7_c2DgAUCxFeqQ0s4C0X5h3A-k9XG3Gx_xPeibrKAiV3o1ppWihmIFobAuFuORvI89bY_T0nn3dAq2QgHp04PTAq=w1547-h1031-s-no-gm?authuser=0",
-    "desc": "",
-    "favorite": false
-  },
-  {
-    "id": "alb_usr_3",
-    "title": "PERHIMPUNAN PELAJAR & MAJLIS PENYAMPAIAN ANUGERAH PENGARAH KOLEJ KOMUNITI MASJID TANAH 2024",
-    "url": "https://photos.app.goo.gl/hULcYXf96hjTyqLSA",
-    "date": "27 September 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNY7pd9yiWF7FhZSRUsssqDcmyfyFljmy6ivMYhlFIz791_vSj6oe_faZQ3WYDnOz4l2xxdWTXTQCxCO6KtDrxQvz-tBqYHVogcb-jL23MMl4_tRnpgL5CdR48RhuFCgeWe-5YfXMK0rJROXGGgylyt=w1547-h1031-s-no-gm?authuser=0",
-    "desc": "Tap to open the album and view original high-resolution photos.",
-    "favorite": false
-  },
-  {
-    "id": "alb_usr_1",
-    "title": "LAWATAN PENANDA ARAS KOLEJ KOMUNITI KEMAMAN KE KOLEJ KOMUNITI MASJID TANAH",
-    "url": "https://photos.app.goo.gl/sfCav5466URuYixDA",
-    "date": "25 September 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpyDadrLWnrMGT74UDpFjAxrGcR0CQSnJAW-AWGiqoi65owQfTt6nvSpM2Qq0kz0S360ZmKyUj785plfCteNT8cvJNBLpeLU3BvsaLlpM90RHrjVmthmeO5PCgVoZsu0dsWvIRq04WhY2W2ywg6LQ7=w1547-h1031-s-no-gm?authuser=0",
-    "desc": "Tap to open the album and view original high-resolution photos.",
-    "favorite": false
-  },
-  {
-    "id": "alb_usr_2",
-    "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2024",
-    "url": "https://photos.app.goo.gl/Tc8F32DMe4coSMFB9",
-    "date": "19 August 2024",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczNc9c91-dF77o7mO_mCYQanU1WGOBMBoVXpGVaio_J1iYhexPCs7ofSGXUdT5CHGCzjL86wbM-CF7s4o3H_P6I1Xf3j4ckxU5BxIl7C7VDHhWlEvSihEth4vxmh7p30n2tw_ugVEgNh6DP5z3yM5QWN=w1547-h1031-s-no-gm?authuser=0",
-    "desc": "Tap to open the album and view original high-resolution photos.",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789482124528",
-    "title": "KARNIVAL PSH@TVET BERSAMA KOMUNITI 2023",
-    "url": "https://photos.app.goo.gl/6GT8hsnYzruitdoz7",
-    "date": "23 June 2023",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczP0niw9SlZXN7rhaIejnKIwi3nHWYgFegX2Zs1IcMH76T8KxsnIqnD8mllN2GlysFHpzSa4ab7kk5JH7W5iJ-S8fEsP07Wy-EAgSX2C7RI4TAVXaA4x_B7X6Os3YgNj9oZQ82UDcHrrEOcdksuMHD0S=w1418-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483377577",
-    "title": "OFFICIAL CORPORATE PHOTO KKMT",
-    "url": "https://photos.app.goo.gl/x1FWnAFXp7XtFQnUA",
-    "date": "",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczOcKbbfqacFcIOzSrtfS0QanBg-UZhFC-0d8f0RH_p7qhMiTKLY5uDupcx-SGLKr0jOqFjDGOSiHYSEua_tnBTr4ntoABJ4_K5yzlIZyRHicTp_WojJ-NPaC4vDq3gDR8PwWE31_YIAPQhDiRRM7lHh=w630-h945-s-no-gm?authuser=0",
-    "favorite": false
-  },
-  {
-    "id": "alb_1789483230797",
-    "title": "OFFICIAL PASSPORT PHOTO KKMT",
-    "url": "https://photos.app.goo.gl/fv9RqjpB4iTjqxX88",
-    "date": "",
-    "cover": "https://lh3.googleusercontent.com/pw/AP1GczMJ6C9iD9CuvcKARf142RNnXEewbV2QYLMwajIL3g2HU3O9TQ1A-rniGM0oxIwW42KKZWlcxw8rZeRF2AeUMNQY8GCSm4LW_9PJyjHT2aBVTnea_r4SJJp4AOtZ08-6XWuT9cqd313IpzPtF5MzVQbq=w735-h945-s-no-gm?authuser=0",
-    "favorite": false
-  }
-];
+            {
+                "id": "alb_1789484022625",
+                "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA - SIDANG 19",
+                "url": "https://photos.app.goo.gl/geA97raEnuXboqQf6",
+                "date": "14 September 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOcboBGJ3HMrlBwBcoxKCD7EhM14P82VYH0VRCH_8ONsKdI1DqOVgoLmSbWJ-kUAYoWmVJQoHXyVNlLDOWDH0_hYRkZ-1wLRxDpzzwjAIrs153ZFd7adBIWetRTBbtUchFacLHCEPNBiL7vhw73pPoq=w1679-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483971802",
+                "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA - SIDANG 18",
+                "url": "https://photos.app.goo.gl/HAqjMbbw2MMHsTy59",
+                "date": "14 September 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczP7riBmSw8bnwOf7A6t6JgXMvS9BERmbFuKqslq5KSpEliJjWrp6HKSUSVw8ixQqskdlvY8I8BhqGMjkJFvlOIC6M9RhaX3oXI4oDeXwunoq3-o6TV5ef20-R6oJpfZso-O5UzXp6Jj-FXP10Uzwnvr=w1680-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483923007",
+                "title": "RAPTAI MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2026",
+                "url": "https://photos.app.goo.gl/VLwGkgwjm2e7snMk8",
+                "date": "13 September 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPy83HwmGaYxmhIZsLCXUSg5lWX_VcX-SjeSpcy7YNXMR0H4-gRKM8f9RcvBEs_OPwKuQa4dFOs_vkks-vCNRebrt3b2C4JglQajJy9A19e34TbyTUxiNkyQQtQ5JyaiNnWzJcvJWBCHQQAUOp1KyQL=w1681-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483851813",
+                "title": "BENGKEL PEMBANGUNAN GARIS PANDUAN KAJIAN PROGRAM NEEDS ANALYSIS (PNA) DAN MARKET NEED ANALYSIS (MNA)",
+                "url": "https://photos.app.goo.gl/b8hC3BXpnK74Ew5M7",
+                "date": "9 - 10 September 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczP6XL8Mhkt-nlDIKpkh2f_HiktiWempUyM38zv12UE6PcEedS5mCaWKECw36GyqleXH8vxghtEJtBoBqI4D6vRC8DW3jbOMTyq6UEeuyNkwAr1Dgd_a2JigSMPE869T90U1pJgIJGCNeTlPdVSTPQYi=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483770546",
+                "title": "KURSUS UPSKILLING PENSYARAH: MOBILE APPLICATION BAGI PROGRAM SIJIL DI BAWAH BIDANG PENGKOMPUTERAN",
+                "url": "https://photos.app.goo.gl/YYHfASpQGzfBxEW67",
+                "date": "14 - 16 July 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPu8IchG671k4nBCgAndgBFMqz5fT1TK5yUVPOrxpAZQK48WTfJBuhNGPec4mVAPcj6h3nyG7SY-j1LJkGgHb-LGe_pBHMLtEwVsD9dzzBounY0aZROCsQj1UPd3xC3zajQscVKBwY0TnTqt7X1wYNb=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789478113781",
+                "title": "GOTONG-ROYONG PERDANA EKSA BIL. 2/2026 DAN PROGRAM GOTONG ROYONG MEGA PERANGI AEDES BIL. 1/2026 PERINGKAT KEBANGSAAN",
+                "url": "https://photos.app.goo.gl/Lx9YcXH7zniaqiZo7",
+                "date": "13 July 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczO8y-plT_0uv-N1yQpz-LyjoGgmWJ1ydHW3mk8jnu03U9Q3PAUq6CAS5y6MOoLNvNXDR8fgjWqcPfboFsoL53LTnOVduBK5KpeivkKxRGuIuiVi9kXKM4nwVzFFpxub_JYTxaF963dA6xe_5hT9Grct=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483622233",
+                "title": "LAWATAN SUSULAN PENAZIRAN AKADEMIK (PENA)",
+                "url": "https://photos.app.goo.gl/p1qV5xxnjYwhXuMc8",
+                "date": "9 July 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPgXwXgdEsMLSGvg8PxNN4mRc_KpBAH1kl_dBsbGXESOpHKVbyP1r-vA9K-2qvX8PZhx8H7JNHIE3IJi-7NhfEFEgDJrowZiH6edvBc9afhQ7C8zL81CXFEL2pMwuGSulvnlX6ef3Uatu9tM9XGAYxF=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483560824",
+                "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI I 2026/2027",
+                "url": "https://photos.app.goo.gl/Y7jsDYTNhXE3WKJeA",
+                "date": "23 June 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOrBAbQA8vuj_7m78957qlW3chH_e0pEqHCHWukBKSMrrM40MecsVpw3ec227mqPPK7c3ONaYJ5-kSkObrWo_x59fqwpMcQAHTTYbutsFfOs5oprCW0dRbsjl0mWgJBSbM7U9-ia-aB-RcSNw8PvjPd=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483503279",
+                "title": "MESYUARAT PENASIHAT PROGRAM SIJIL TEKNOLOGI MAKLUMAT 2026",
+                "url": "https://photos.app.goo.gl/n29j3rxdjnJMKcib9",
+                "date": "10 June 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMT0c_hJTaKAr1rqUQcfiy80bDFtxzac7Xp6XigUOQeCDdtj4H-ycvRIxfDhvY_ntgm1L93lWxBUHS0R9aqdD43aW3TS1rddaSPcjrSGBdQH0BhAIrBcHKBBkhTejkmz4M85yPusF1atTqpZNcwx6HH=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483149823",
+                "title": "RASSCOMTECH PROJECT SHOWCASE 2026",
+                "url": "https://photos.app.goo.gl/8gVQxFh92gBoK3Mq9",
+                "date": "7 May 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPKrKb2oHKos6ImJ92Qj0Tpb6ZPbI2j40KpiukgEWQ_C6KwlIsG1ySbdzzWk_Gbyy33bHYg84bHoO1aZuYONsJvwaqFApXMSuaJqNKKY-SPzTHndmA-VF1iu9hAT3gQebC_yJ0eEknN_6nV1jOllIFW=w1679-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483684609",
+                "title": "PROGRAM UKHWAH PASUKAN SIJIL TEKNOLOGI MAKLUMAT (STM) 2026",
+                "url": "https://photos.app.goo.gl/XgPAqxruCh2DapjN9",
+                "date": "4 - 5 May 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNxqGH_G5WECuxPMI0HYyt6xeQ_vRnh2KWj5M-YrqWdrszrvg2-opzXWg0jbnIPJ8jB-0rLPW4hs61p0aNv25w04KfCNaAUQiFFWGlBu905J4gyfqBSb66Ff3ht2WIaZETW4nxVaeTFHEpxJmMC-hPm=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483050457",
+                "title": "MAJLIS APRESIASI PELAJAR & SAMBUTAN HARI RAYA AIDILFITRI 2026",
+                "url": "https://photos.app.goo.gl/4NJ8rLna3GzKh3KG6",
+                "date": "15 April 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMljD83vSqbKKJ64RYpMwI7MBR5zLf_ju312uQR0W75sBUe-6hCkoGvB31CqTjmydV7-fEoitThgeVo5CA_pRbHTrts-5QG6DQ6dBkJEM9jQQchAFSuQKbp9vl730T1w5u8SRK6iw21_Kuv7IWraZ-I=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482919773",
+                "title": "LANTERA QASEH@KKMT 2026",
+                "url": "https://photos.app.goo.gl/zV9RW3PgeubpMj727",
+                "date": "27 February - 13 May 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczN5hn4VxYlFb_HCJtgYVTKBjYLjzEVu0w5YteElHP6v8FTHXW-iJ1nlVtMLsKu0KEAa6GzbbKOjZGgdkHaUayzJTANE-FADWUMo1o4HjUaHtKFtuQSd3Ak7xaV4CX4Mg5l60qqBmdTIXkMjrx5CDY2X=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482814153",
+                "title": "PROGRAM LATIHAN PENGUNGSIAN BANGUNAN (FIRE DRILL) 2026",
+                "url": "https://photos.app.goo.gl/ViEc7PJrbHwxU51AA",
+                "date": "12 February 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMzUvUgD_xmDM4SDASf2SQMAlauKPe6TVK9x5rTIrdwvx-o0zJH88g7tihFSqP0JwEXrEcCNIaYHy5w0q3UtwsdKTvkWekXfsrAXQtvkfloUd9KZSNSfYJvSOe9MSzZSw3YHwr1HQv_fEJI6ojh4sYv=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482726722",
+                "title": "PROGRAM DERMA DARAH BLOOD FOR LIFE",
+                "url": "https://photos.app.goo.gl/rgfc1w7zyJirnUHV9",
+                "date": "11 February 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczN-_SSNRc1gZzXQoHr87BwI9cj2cDaG-crZ8aKj4hzYgfxpHCSsyofTCPTHhihv088fYQI-YcY1igIOzAI5MTzjz9-HBkQiCD9lHkTtoSVHPzJT7cm4JqzJcwaCELw54QEztDGKxTSQdTe4Ms_DUd_7=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482671751",
+                "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI II 2025/2026",
+                "url": "https://photos.app.goo.gl/nvvF19xLsGnmZKjC9",
+                "date": "6 January 2026",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMbu9sT3qJQuaw5ntxyfhzrK2FuiztNUt4L8575vwS2Emi58XFYyQP5m1tFJoCwei2Nw0Y9DDsCYi-b8rrB5ovK9wwby3DbYriIP79PBUS4M4mghR5jzp5TVuT8K93blpWvav_K1IFK6pDi9m8RFwTk=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482591972",
+                "title": "BENGKEL PENGURUSAN PADANG DAN UNDANG-UNDANG SUKAN BOLA SEPAK POLYCC MELAKA DAN NEGERI SEMBILAN 2025",
+                "url": "https://photos.app.goo.gl/MX8FZ7RSuN8ja24K6",
+                "date": "18 December 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMe2OuEWAbht1xva01fGr-LT_MDMUL97XqeDZ0xqbFm4dKkb7-teTiEYwUDKuyan3Pkj7QA5T985kGtamvffL9Yk4oG7ZgJD7rb0G_QgDObi9IItVXK9_AfpoMsgIswshpDZTRJ9MNlSr8sQtY6lPoi=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482507647",
+                "title": "PROGRAM KURSUS PEMANTAPAN KERJASAMA BERPASUKAN DAN SOKONGAN KESIHATAN MENTAL",
+                "url": "https://photos.app.goo.gl/bvWzT1zqHG4T2qADA",
+                "date": "15 December 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOyoFG3hO2maMRf_8693ORratPeIc4nRG5bb20_aiiCIJqHw9Kbc6UdqbnI2mcNkLB3B7_4Uldv4K33qzrorsXZt-2cXAMGKe_5PpdcQsUhHXZs3HScpJLAtk556QozgX3kmZ5W6G7ErVOQKs9DRN2x=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789481948990",
+                "title": "MESYUARAT JAWATANKUASA PENASIHAT INDUSTRI (JPI) KOLEJ KOMUNITI MASJID TANAH TAHUN 2025",
+                "url": "https://photos.app.goo.gl/6hPT67Xk5LUVqJbA8",
+                "date": "23 October 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNXkA3_XjRaIC20UhUSoE_8YBOhQliB_uTTOOk2KXQhAid1fwehZc7Ai3WFvVkjfmL9YhB23EY1NfBzQkLmtNLbOTrGA2dTEJJQUAWL95CBeF45zkcAbpDaalBVg-mhlOxurJWEz01on9qFHqxjg8EE=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789481886620",
+                "title": "SPSH 2025 - CLOSING CEREMONY",
+                "url": "https://photos.app.goo.gl/3tHJNypGkERabqvs6",
+                "date": "2 October 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNSSE8uWU-sxneC8m2ScF42p3EyUjY2Ix7QvBDJf4Tds1Mhgp4QMYNvj7gwDyUpMlMCzsqMvPuP7s2BEH24sjegLufvGw19xmq0KhYtzpc-BckdYGRAJW1y8r3MC2iWrwCO1DSoeG2nncBuEXuPHj0t=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789481799833",
+                "title": "SPSH 2025 - COMMITTEE MEETING",
+                "url": "https://photos.app.goo.gl/LL1KZHUruxPcrcta9",
+                "date": "7 May - 25 September 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPHscQ0l8PRtG2fw4w94IbhxKEhJhz8vyQAIPeui9Ab9R5_RZL0_f-mExK27fURx6EAtlJ2DSUlRZymFVqZlQfB_A8x2K_XzkrV9lBxJFz3Ff8U-WVye2pkpbmjcrOlsBjzPQEkh-jqDBSj18A6yeQw=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789481636020",
+                "title": "ProAlBi 2025",
+                "url": "https://photos.app.goo.gl/QaxafccDYjPgoAAE9",
+                "date": "26 - 28 August 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczN-kZhYwBwCldGgXH3bY_kC3rhd6MrYq3pPU31RjS9gXJoAsu81Z7uzYNdmUzOhLVB4-blcIIEB-fk_nfIooRrSnmMiFRVaYg2w06s5pC6sqMjwuxFj4zqFjMnNFV-cFU9tcB1nTiMpNdHIi6cRKAhO=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789481449695",
+                "title": "PROGRAM PENINGKATAN KEMAHIRAN (PPK) AUTODESK AUTOCAD CERTIFIED USER (ACU) TRAINING",
+                "url": "https://photos.app.goo.gl/SxTSr81N4wi4gicA9",
+                "date": "22 August 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczO7OPudkjIjQ-S6JqwY4y7my6lPOsiWCSAf0qP2mSFrpDTc7Fv_fKJ-vBsWP5onLEcs6Ntf_IuHH_HxTgZR-_nLyHJ5e-LX6rkWHL-ultbMMtNyrKQ_C0_4uDBmB3_mIhuerPtZhzcr-1Q5ZKKxbF8=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477998651",
+                "title": "KURSUS APPLICATION OF AI PROMPTING IN OFFICE DI AKADEMI KASTAM DIRAJA MALAYSIA (AKMAL), MELAKA",
+                "url": "https://photos.app.goo.gl/WN24nvihnCond6Bd7",
+                "date": "13 August 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMcwKy2J15yVTdf4LoTv5mTanNVLw-3fshvM9vA0ZtvPsw_VxeRZ_BOqpqzhC3r8sBmy7cM2mzOw1NcwLXVKwh_i0gT0CTpeoZFE6nt2du75W-8jPfcVeekdL-PLkqhBLWqbzYiEMOs5ouSJi4VHEXa=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477928247",
+                "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2025",
+                "url": "https://photos.app.goo.gl/4UP82Rihcoy3ob3c8",
+                "date": "3 August 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOCiX2iG5UIml_13ZABJQzh5kM8h-s6HcX6pNycH1UerhWXSX_beR5YoaYUz19uIpmMpk6YznCvXtyCzjVJNCTlLFUlr8ElCZqAliYUKm-gQPAEyZSxZ3XS00z-y6kWug_6S1YV5YK5Rg7gt1dz557k=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477867342",
+                "title": "RAPTAI MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2025",
+                "url": "https://photos.app.goo.gl/ZG12mU7u2kAPK1Ni7",
+                "date": "2 August 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMCMZUsykUdbFFJ72aXtzKRz_iVSzC0InE4p_IDZ_xiCnfodAG6Pej_1xsHSbsxOuCguzdMF-ibzoRJf1X0SORqkc4xdv7hGXq4OCsm--TtmdmASEF1oxtNAL4DaEF3Z5Md7W6efC0osrwrmOf_zWyV=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477803940",
+                "title": "HARI PENDAFTARAN PELAJAR BAHARU SESI I 2025/2026",
+                "url": "https://photos.app.goo.gl/izhot5vAUy773jRX9",
+                "date": "29 July 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMb5Ohm77Oryw8tKIKoe7yFdnyNU4gDmBEtH0dHrfbTjWEt0161hI8scT1XOrX7o4Va_AEHhTcfMC7VPjLDfnmE3Ardo_wod8BNbsj2-g9_9T1Si8U1lbDDR0NCIGaEcLr4VzdvJ_skD50uQyQbO7iT=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477484131",
+                "title": "SAMBUTAN HARI RAYA KOLEJ KOMUNITI MASJID TANAH 2025",
+                "url": "https://photos.app.goo.gl/8syBRnYK5UGQMs8U7",
+                "date": "16 April 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNGJd7lTFGsf5W9DH1BcTBL2_MpCiFlYwY-ZPxY3-rrwZRpNGpMxzjsvV45-TYEaek5vll9Lwcq5zhlUIEuv__Z5rQhxl9u8yfeJxOqjlFh7ZnDr7z6kYHpGo8NWlPCj-XbXc_6MD5It8E-H9_u9YXV=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477717339",
+                "title": "RASSCOMTECH PROJECT SHOWCASE 2025",
+                "url": "https://photos.app.goo.gl/jaSNAuHCkFeR2nDL9",
+                "date": "14 March 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMfH1eIVKh1EaFnXPtOHp31XhoNkwtRfdTFWHIbH_PgXKhYqzFttSbk6FyhZB_VKmqcoew2Bg-ETjIKW2ZDKdTfncozSeYRUQKUopL4Di3gzowNPZdjJtt6C-ozl8SMKgSQv-OrSWdXhIWEomW9cFN-=w1507-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477636440",
+                "title": "LAWATAN AKADEMIK UNIT STM : IT VENTURE",
+                "url": "https://photos.app.goo.gl/qRqdSBRMVp6mD23r9",
+                "date": "6 March 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpjIIBVx94qiLLUE3rJ7W-nDx3-5patYicKl9xSfW9m42X40G7RpPQQ9XyG7gNfBUyxFLMdfDnZM30NwbMlRuqv_QRjR8-3PCwyeWHYDUWvBRQZWKlMXkF4Bjl5j0O-uAEKr-o_6G69cdh9Rxwh3uz=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477399375",
+                "title": "MAJLIS PENUTUP LANTERA QASEH@KKMT 2025",
+                "url": "https://photos.app.goo.gl/4TR7ZiHZeeFnUdea6",
+                "date": "2 March 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMi6q6fgN3OZ_-06DwMzjFh213UEkpesI3E5utREUi_RH62_q1p9bnl-hsFqFkIIz5mmWBSSHKn0RHJkc7IckpnTBXJaZA2VVavZEWzK97MhsibubO1XIWCZlTlVxq290JKlgAcgtfiOW08ox0Vpgmd=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477332586",
+                "title": "AUDIT PENSIJILAN SEMULA MS ISO 9001:2015",
+                "url": "https://photos.app.goo.gl/cRYtduuDRS7R9Mv4A",
+                "date": "27 -28 February 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPbJ4iDTXPrxmlXQ-voSHec-70ukIsHvfZCvw1CB_sv-KnsBMl1pRZuotXIu-XVCTyobJp6RA17g3twaP_J6MrrqbFQNCBVp5CdOzxfClxJX29bQzkUbvbaJ5k6QFQyj-SVQsZyBzr8A7YNIVzJ746v=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477258649",
+                "title": "PROGRAM MEMBANGUN SINERGI BUDAYA KEUSAHAWANAN MELALUI BISNES DIGITAL BERSAMA POLITEKNIK NEGERI BENGKALIS, INDONESIA",
+                "url": "https://photos.app.goo.gl/59B2o5s5YG8fvjwo7",
+                "date": "2 February 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOSogdLvDjoCri-AtDXixezFILR-0jwpEwUvzbWMtHymb0qDK86oGa4EQvx3esn54fjQK7P9oTIgsMZLKnMnBWA65CfIy4ab4gaLAdKW91kzdNpCNN11MBBhVSwdzwpbnWOfakBS5JKOEH9rqfm3uYc=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477198586",
+                "title": "CSR BERSAMA TADIKA JAIM MELAKA",
+                "url": "https://photos.app.goo.gl/1sP7ZqqAmkJzwnxR8",
+                "date": "14 January 2025",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOAji7tzu1hEOcjhT4ItPjAfe20OBFjHVyyVXS2QYBbiZ85Ah6TIucv26NgQdlQzpc3iCNVTDBAxc1rv1dw2gun_X3OFuRXfeQ2vP8DB54Ai9HaNbpGPhs9ZGQyt4dLlGEA8MMce7W1_vH-pufTV6Ds=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477148375",
+                "title": "KURSUS ASAS TENPIN BOWLING STAF KOLEJ KOMUNITI MASJID TANAH 2024",
+                "url": "https://photos.app.goo.gl/mY9UbUoHVXXenXda8",
+                "date": "16 December 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOMq65fVWTfO1WC3_H_57fqWoOmDAFnd_dQzzLGtiYw3t9M7DTJjH8jI74FJcra3ZE50TCtEhnBBReHpZ6sSZt4Gvb67RULKyIN2i8jGL_74jjDJ-EPp-eiok2EqgGO2asvo9HWuVvabdq0ku-a6P9K=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789477025271",
+                "title": "MAJLIS APRESIASI & AKADEMIA KOLEJ KOMUNITI MASJID TANAH 2024",
+                "url": "https://photos.app.goo.gl/RF8Vu29SfLGNNi998",
+                "date": "5 December 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczP0eiP7ugrKCK-Y1z-NNEg5rVaoIT0uUez1tJgYmR2QII7peCv0Grkj9Z6lXKsn7Y9d8UwUN7XESq623z1bn_Hta7r0I8eZTgxSXJADW6xogFUCbWr0_n2BdhZAzcd3fcv9AMGsr_9eRTc3hwqMvk7v=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789476965352",
+                "title": "MAJLIS PRA GRADUASI UNIT SIJIL TEKNOLOGI MAKLUMAT 2024",
+                "url": "https://photos.app.goo.gl/XoUy9fczCiMKaavk8",
+                "date": "29 November 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPIiHZReZnpxrRUaZsqG93ZPsHXCNFfaDewO1a3JvlSG49XY_oCqysH_iGZ_11y5rqXYgCWGignydds2P3QpgqNEMr5gz3fSfZ1V94tIajksxPVIG6NzoOTEVwQT1Wmq5f6ZEDXVmqT2PKcHPm6x_zS=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789476891118",
+                "title": "RASSCOMTECH PROJECT SHOWCASE 2024",
+                "url": "https://photos.app.goo.gl/cxcMm68zo9weeyFR9",
+                "date": "20 November 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNCYiUqPLpdQtzqX2McGFQDZYBiQrpQJV2ZnSst5vEDw8MqS5d92iZFyFOMZidOXyXZsd8f499vDUWjuQSbTVCegj5xBE3N8lRIA1A056TEHUF_ECjxeTR421fffdiv3I0rbDl5dDXCl05qzc2nBTyN=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789473852989",
+                "title": "PERASMIAN PENUTUP KURSUS URUTAN POSTNATAL & PENJAGAAN IBU BERPANTANG",
+                "url": "https://photos.app.goo.gl/wPMFCYJeoBiPxxo29",
+                "date": "7 November 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOER20VPDRXUegbRYJYghbVcFtT7xhbFlYVv2QKrZ2hJNUhDm838gipPMlfuRrRvcK4FV8Nb5MVmxVsFje4Xs_SbyKUBH1NwDA1YrFDV-Pj4a_Y88YUGaJuIH35DY_eq2fPkNUNNC4ojAdesO7CblT1=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789473763199",
+                "title": "MESYUARAT JAWATANKUASA PENASIHAT INDUSTRI KOLEJ KOMUNITI MASJID TANAH 2024",
+                "url": "https://photos.app.goo.gl/WVX1fmhNizrbQwsy6",
+                "date": "10 October 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczN7Qlsma1rZlvgxLwSgByrU8-2D7KsMebTG4N1cpZb36Wx7MMCLCwcKJpB2DVwTX6_pnPbkSkIwRmB2iuVqmweRgzJFDEhJ9jYYWuWY9gVf3or8t3QyghHUQiExNiU-MbArqvIHTW9EXr0HtsdPD6hA=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789473653547",
+                "title": "KURSUS KEPIMPINAN & PERASMIAN COLLABORATIVE CLASSROOM",
+                "url": "https://photos.app.goo.gl/phWMs5hpLKf1g8Rv7",
+                "date": "30 September 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpao7Gij7Zg9yehxxwSM1zPLFYS0DOntX6yPcnx4K450wrN11mOUcDG9Tr7deN7_c2DgAUCxFeqQ0s4C0X5h3A-k9XG3Gx_xPeibrKAiV3o1ppWihmIFobAuFuORvI89bY_T0nn3dAq2QgHp04PTAq=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_usr_3",
+                "title": "PERHIMPUNAN PELAJAR & MAJLIS PENYAMPAIAN ANUGERAH PENGARAH KOLEJ KOMUNITI MASJID TANAH 2024",
+                "url": "https://photos.app.goo.gl/hULcYXf96hjTyqLSA",
+                "date": "27 September 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNY7pd9yiWF7FhZSRUsssqDcmyfyFljmy6ivMYhlFIz791_vSj6oe_faZQ3WYDnOz4l2xxdWTXTQCxCO6KtDrxQvz-tBqYHVogcb-jL23MMl4_tRnpgL5CdR48RhuFCgeWe-5YfXMK0rJROXGGgylyt=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_usr_1",
+                "title": "LAWATAN PENANDA ARAS KOLEJ KOMUNITI KEMAMAN KE KOLEJ KOMUNITI MASJID TANAH",
+                "url": "https://photos.app.goo.gl/sfCav5466URuYixDA",
+                "date": "25 September 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczPpyDadrLWnrMGT74UDpFjAxrGcR0CQSnJAW-AWGiqoi65owQfTt6nvSpM2Qq0kz0S360ZmKyUj785plfCteNT8cvJNBLpeLU3BvsaLlpM90RHrjVmthmeO5PCgVoZsu0dsWvIRq04WhY2W2ywg6LQ7=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_usr_2",
+                "title": "MAJLIS KONVOKESYEN KOLEJ KOMUNITI NEGERI MELAKA 2024",
+                "url": "https://photos.app.goo.gl/Tc8F32DMe4coSMFB9",
+                "date": "19 August 2024",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczNc9c91-dF77o7mO_mCYQanU1WGOBMBoVXpGVaio_J1iYhexPCs7ofSGXUdT5CHGCzjL86wbM-CF7s4o3H_P6I1Xf3j4ckxU5BxIl7C7VDHhWlEvSihEth4vxmh7p30n2tw_ugVEgNh6DP5z3yM5QWN=w1547-h1031-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789482124528",
+                "title": "KARNIVAL PSH@TVET BERSAMA KOMUNITI 2023",
+                "url": "https://photos.app.goo.gl/6GT8hsnYzruitdoz7",
+                "date": "23 June 2023",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczP0niw9SlZXN7rhaIejnKIwi3nHWYgFegX2Zs1IcMH76T8KxsnIqnD8mllN2GlysFHpzSa4ab7kk5JH7W5iJ-S8fEsP07Wy-EAgSX2C7RI4TAVXaA4x_B7X6Os3YgNj9oZQ82UDcHrrEOcdksuMHD0S=w1418-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483377577",
+                "title": "OFFICIAL CORPORATE PHOTO KKMT",
+                "url": "https://photos.app.goo.gl/x1FWnAFXp7XtFQnUA",
+                "date": "",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczOcKbbfqacFcIOzSrtfS0QanBg-UZhFC-0d8f0RH_p7qhMiTKLY5uDupcx-SGLKr0jOqFjDGOSiHYSEua_tnBTr4ntoABJ4_K5yzlIZyRHicTp_WojJ-NPaC4vDq3gDR8PwWE31_YIAPQhDiRRM7lHh=w630-h945-s-no-gm?authuser=0",
+                "favorite": false
+            },
+            {
+                "id": "alb_1789483230797",
+                "title": "OFFICIAL PASSPORT PHOTO KKMT",
+                "url": "https://photos.app.goo.gl/fv9RqjpB4iTjqxX88",
+                "date": "",
+                "cover": "https://lh3.googleusercontent.com/pw/AP1GczMJ6C9iD9CuvcKARf142RNnXEewbV2QYLMwajIL3g2HU3O9TQ1A-rniGM0oxIwW42KKZWlcxw8rZeRF2AeUMNQY8GCSm4LW_9PJyjHT2aBVTnea_r4SJJp4AOtZ08-6XWuT9cqd313IpzPtF5MzVQbq=w735-h945-s-no-gm?authuser=0",
+                "favorite": false
+            }
+        ];
 
         let albums = [];
         let searchQuery = '';
@@ -861,17 +855,14 @@
         ];
 
         function initApp() {
+            // Clean out old local storage to ensure the index.html file is always the true source
             try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    albums = JSON.parse(saved);
-                } else {
-                    albums = [...SAMPLE_ALBUMS];
-                    saveToStorage();
-                }
-            } catch (e) {
-                albums = [...SAMPLE_ALBUMS];
-            }
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem('google_photos_hub_fingerprint');
+            } catch (e) {}
+
+            // Always load directly from SAMPLE_ALBUMS defined in this file
+            albums = [...SAMPLE_ALBUMS];
 
             renderAlbums();
             updateStats();
@@ -1500,60 +1491,56 @@
         }
 
         function saveToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
-            } catch (e) {
-                console.error('Storage quota exceeded or disabled', e);
+            // Memory update during current editing session
+        }
+
+        function openExportModal() {
+            // Support both element IDs safely
+            const area = document.getElementById('exportCodeArea') || document.getElementById('backupJsonArea');
+            const modal = document.getElementById('exportModal') || document.getElementById('backupModal');
+            
+            const codeSnippet = `const SAMPLE_ALBUMS = ${JSON.stringify(albums, null, 4)};`;
+
+            if (area) {
+                area.value = codeSnippet;
+            }
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+            if (area) {
+                setTimeout(() => {
+                    area.focus();
+                    area.select();
+                }, 80);
             }
         }
 
-        function openBackupModal() {
-            const area = document.getElementById('backupJsonArea');
-            area.value = JSON.stringify(albums, null, 2);
-            document.getElementById('backupModal').classList.remove('hidden');
+        function closeExportModal() {
+            const modal = document.getElementById('exportModal') || document.getElementById('backupModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
         }
 
-        function closeBackupModal() {
-            document.getElementById('backupModal').classList.add('hidden');
-        }
-
-        function copyBackupJson() {
-            const area = document.getElementById('backupJsonArea');
+        function copyExportCode() {
+            const area = document.getElementById('exportCodeArea') || document.getElementById('backupJsonArea');
+            if (!area) return;
             area.select();
             try {
                 document.execCommand('copy');
-                showToast('JSON albums list copied to clipboard!');
+                showToast('Code copied! Paste it into index.html on GitHub.');
             } catch (err) {
-                showToast('Failed to copy JSON.');
+                showToast('Please select and copy the text manually.');
             }
         }
 
-        function importBackupJson() {
-            const area = document.getElementById('backupJsonArea');
-            try {
-                const parsed = JSON.parse(area.value);
-                if (Array.isArray(parsed)) {
-                    albums = parsed;
-                    saveToStorage();
-                    renderAlbums();
-                    updateStats();
-                    closeBackupModal();
-                    showToast('Albums successfully imported!');
-                } else {
-                    showToast('Invalid JSON structure: must be an array.');
-                }
-            } catch (err) {
-                showToast('Error parsing JSON. Check your formatting.');
-            }
+        // Backward compatibility alias for any remaining backup calls
+        function openBackupModal() {
+            openExportModal();
         }
 
-        function restoreSampleData() {
-            albums = [...SAMPLE_ALBUMS];
-            saveToStorage();
-            renderAlbums();
-            updateStats();
-            closeBackupModal();
-            showToast('Reset to default demonstration albums.');
+        function closeBackupModal() {
+            closeExportModal();
         }
 
         let toastTimeout = null;
@@ -1590,7 +1577,7 @@
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeAlbumModal();
-                closeBackupModal();
+                closeExportModal();
                 closeConfirmModal(false);
                 closePinModal();
                 closeQrModal();
